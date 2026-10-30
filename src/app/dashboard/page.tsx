@@ -3,6 +3,7 @@ import { SidebarNav } from '@/components/dashboard/SidebarNav';
 import { TopStatsCards } from '@/components/dashboard/TopStatsCards';
 import { OrderStatusTracker } from '@/components/dashboard/OrderStatusTracker';
 import { PaginatedDataTable } from '@/components/dashboard/PaginatedDataTable';
+import { PaperStudio } from '@/components/dashboard/PaperStudio';
 import { Terminal } from 'lucide-react';
 
 export default function DashboardPage() {
@@ -40,6 +41,9 @@ export default function DashboardPage() {
 
         {/* 4 KPI Telemetry Cards */}
         <TopStatsCards />
+
+        {/* Interactive PaperCraft Studio (Autonomous Paper Generator & PDF/DOC Exporter) */}
+        <PaperStudio />
 
         {/* Paginated Sortable Data Table */}
         <div className="mb-4 flex items-center justify-between">

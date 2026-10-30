@@ -1,10 +1,11 @@
 import React from 'react';
-import { describe, it, expect } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { describe, it, expect, vi } from 'vitest';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { SidebarNav } from '@/components/dashboard/SidebarNav';
 import { TopStatsCards } from '@/components/dashboard/TopStatsCards';
 import { PaginatedDataTable } from '@/components/dashboard/PaginatedDataTable';
 import { OrderStatusTracker } from '@/components/dashboard/OrderStatusTracker';
+import { PaperStudio } from '@/components/dashboard/PaperStudio';
 
 describe('Phase 3 Plane A UI: Dashboard Components', () => {
   it('renders SidebarNav and toggles collapsed state', () => {
@@ -63,5 +64,44 @@ describe('Phase 3 Plane A UI: Dashboard Components', () => {
     const nextBtn = screen.getByRole('button', { name: /Next Page/i });
     fireEvent.click(nextBtn);
     expect(screen.getByText(/Page 2 of/i)).toBeInTheDocument();
+  });
+
+  it('renders PaperStudio and shows Download as PDF and Download as DOC after generation', async () => {
+    const mockFetch = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        success: true,
+        text: '# Official Examination Paper\n\n## Section 1: Questions\n1. Explain Newton\'s First Law. [4 marks]',
+        provider: 'gemini',
+        model: 'gemini-2.5-flash',
+        latencyMs: 420,
+        fallbackUsed: false,
+      }),
+    });
+    vi.stubGlobal('fetch', mockFetch);
+
+    render(<PaperStudio />);
+
+    expect(screen.getByText(/Autonomous Exam & Academic Paper Creator/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Paper Title/i)).toBeInTheDocument();
+
+    const generateBtn = screen.getByRole('button', { name: /Generate Paper with Multi-Provider AI/i });
+    expect(generateBtn).toBeInTheDocument();
+
+    fireEvent.click(generateBtn);
+
+    await waitFor(() => {
+      expect(screen.getByText(/Paper Generated Successfully/i)).toBeInTheDocument();
+    });
+
+    // Verify both "Download as PDF" and "Download as DOC" buttons appear
+    const pdfButtons = screen.getAllByRole('button', { name: /Download as PDF/i });
+    const docButtons = screen.getAllByRole('button', { name: /Download as DOC/i });
+
+    expect(pdfButtons.length).toBeGreaterThanOrEqual(1);
+    expect(docButtons.length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByText(/Explain Newton's First Law/i)).toBeInTheDocument();
+
+    vi.unstubAllGlobals();
   });
 });

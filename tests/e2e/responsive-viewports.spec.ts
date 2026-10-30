@@ -71,5 +71,9 @@ test.describe('Phase 5: Multi-Viewport Responsive QA', () => {
     await expect(searchInput).toBeVisible();
     await searchInput.fill('Relay');
     await expect(page.getByText('Telemetry WebSocket Relay')).toBeVisible();
+
+    // Verify PaperCraft AI Studio and Generation Controls
+    await expect(page.getByText(/Autonomous Exam & Academic Paper Creator/i)).toBeVisible();
+    await expect(page.getByRole('button', { name: /Generate Paper with Multi-Provider AI/i })).toBeVisible();
   });
 });

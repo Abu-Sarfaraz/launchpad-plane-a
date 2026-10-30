@@ -18,8 +18,11 @@ import {
   Check,
   Send,
   Database as DbIcon,
+  Download,
+  FileText,
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+import { downloadAsPdf, downloadAsDoc } from '@/lib/export/documents';
 
 interface SystemState {
   timestamp: string;
@@ -512,7 +515,7 @@ export default function AdminDashboardPage() {
 
               {aiResult && (
                 <div className="mt-4 p-5 rounded-xl bg-canvas-subtle border border-border-default space-y-3">
-                  <div className="flex items-center justify-between pb-3 border-b border-border-default/60">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-border-default/60 gap-3">
                     <div className="flex items-center gap-2">
                       <span className="text-xs text-fg-muted">Resolved Provider:</span>
                       <span className="px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wider bg-accent-cyan/15 text-accent-cyan border border-accent-cyan/30">
@@ -532,6 +535,29 @@ export default function AdminDashboardPage() {
                         </span>
                       )}
                       <span className="text-fg-muted font-mono">{aiResult.latencyMs}ms</span>
+
+                      {/* Download Buttons */}
+                      <Button
+                        type="button"
+                        variant="cyan"
+                        size="sm"
+                        onClick={() => downloadAsPdf('Generated_Paper', aiResult.text)}
+                        className="flex items-center gap-1 font-bold text-xs py-1 px-2.5"
+                      >
+                        <Download className="w-3.5 h-3.5" />
+                        <span>Download as PDF</span>
+                      </Button>
+
+                      <Button
+                        type="button"
+                        variant="glass"
+                        size="sm"
+                        onClick={() => downloadAsDoc('Generated_Paper', aiResult.text)}
+                        className="flex items-center gap-1 text-accent-cyan border-accent-cyan/40 font-bold text-xs py-1 px-2.5"
+                      >
+                        <FileText className="w-3.5 h-3.5" />
+                        <span>Download as DOC</span>
+                      </Button>
                     </div>
                   </div>
 
