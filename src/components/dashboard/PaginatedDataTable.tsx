@@ -206,8 +206,12 @@ export function PaginatedDataTable() {
         </div>
 
         <div className="flex items-center gap-3 w-full sm:w-auto">
-          <label className="text-xs text-text-secondary font-mono">STATUS:</label>
+          <label htmlFor="status-filter-select" className="text-xs text-text-secondary font-mono">
+            STATUS:
+          </label>
           <select
+            id="status-filter-select"
+            aria-label="Filter deployments by status"
             value={statusFilter}
             onChange={(e) => {
               setStatusFilter(e.target.value);
