@@ -28,7 +28,7 @@ const mockDeployments: DeploymentRow[] = [
   {
     id: 'dep_01',
     projectName: 'Orbital Mesh Portal',
-    slug: 'orbital-mesh.launchpad.space',
+    slug: 'orbital-mesh.papergen.space',
     commitSha: '7dc8e59',
     status: 'completed',
     environment: 'production',
@@ -38,7 +38,7 @@ const mockDeployments: DeploymentRow[] = [
   {
     id: 'dep_02',
     projectName: 'Telemetry WebSocket Relay',
-    slug: 'ws-relay.launchpad.space',
+    slug: 'ws-relay.papergen.space',
     commitSha: 'b066403',
     status: 'completed',
     environment: 'production',
@@ -48,7 +48,7 @@ const mockDeployments: DeploymentRow[] = [
   {
     id: 'dep_03',
     projectName: 'Multi-Tenant Auth Gateway',
-    slug: 'auth-gateway.launchpad.space',
+    slug: 'auth-gateway.papergen.space',
     commitSha: 'c8814d6',
     status: 'building',
     environment: 'preview',
@@ -58,7 +58,7 @@ const mockDeployments: DeploymentRow[] = [
   {
     id: 'dep_04',
     projectName: 'Stripe Checkout Webhook Pod',
-    slug: 'billing.launchpad.space',
+    slug: 'billing.papergen.space',
     commitSha: 'e9921f0',
     status: 'completed',
     environment: 'production',
@@ -68,7 +68,7 @@ const mockDeployments: DeploymentRow[] = [
   {
     id: 'dep_05',
     projectName: 'Playwright Browser Cluster',
-    slug: 'qa-matrix.launchpad.space',
+    slug: 'qa-matrix.papergen.space',
     commitSha: 'f1103c8',
     status: 'queued',
     environment: 'preview',
@@ -78,7 +78,7 @@ const mockDeployments: DeploymentRow[] = [
   {
     id: 'dep_06',
     projectName: 'Deep Space CDN Mirror',
-    slug: 'cdn-mirror.launchpad.space',
+    slug: 'cdn-mirror.papergen.space',
     commitSha: 'a445690',
     status: 'completed',
     environment: 'production',
@@ -88,7 +88,7 @@ const mockDeployments: DeploymentRow[] = [
   {
     id: 'dep_07',
     projectName: 'Postgres RLS Advisor Monitor',
-    slug: 'rls-audit.launchpad.space',
+    slug: 'rls-audit.papergen.space',
     commitSha: 'd223019',
     status: 'failed',
     environment: 'preview',
@@ -98,7 +98,7 @@ const mockDeployments: DeploymentRow[] = [
   {
     id: 'dep_08',
     projectName: 'Spacecraft Sensor Ingestion',
-    slug: 'sensors.launchpad.space',
+    slug: 'sensors.papergen.space',
     commitSha: '9bb4211',
     status: 'completed',
     environment: 'production',

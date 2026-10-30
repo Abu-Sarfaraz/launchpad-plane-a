@@ -6,11 +6,13 @@ export async function POST(request: Request) {
   try {
     const rawBody = await request.text();
     const signature =
+      request.headers.get('x-papergen-signature') ||
       request.headers.get('x-launchpad-signature') ||
       request.headers.get('stripe-signature');
 
     const webhookSecret =
       process.env.STRIPE_WEBHOOK_SECRET ||
+      process.env.PAPERGEN_WEBHOOK_SECRET ||
       process.env.LAUNCHPAD_WEBHOOK_SECRET ||
       'dev-webhook-secret';
 

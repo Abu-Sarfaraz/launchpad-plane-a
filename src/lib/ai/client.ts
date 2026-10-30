@@ -100,8 +100,8 @@ export async function callOpenRouter(
       headers: {
         Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
-        'HTTP-Referer': 'https://launchpad-plane-a.vercel.app',
-        'X-Title': 'LaunchPad AI Studio',
+        'HTTP-Referer': 'https://papergen.vercel.app',
+        'X-Title': 'PaperGen AI Studio',
       },
       body: JSON.stringify({
         model,

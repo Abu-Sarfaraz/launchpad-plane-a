@@ -74,7 +74,7 @@ export function FeatureGrid3Col() {
             Engineered for Deep Space & Mission-Critical Cloud
           </h2>
           <p className="font-sans text-text-secondary text-base sm:text-lg">
-            Every layer of LaunchPad is calibrated to deliver ultra-low latency,
+            Every layer of PaperGen is calibrated to deliver ultra-low latency,
             uncompromising security, and deterministic reliability.
           </p>
         </div>

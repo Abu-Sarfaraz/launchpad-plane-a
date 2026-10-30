@@ -1,5 +1,5 @@
 /**
- * Document Export Engine for PaperCraft & Prompt2Paper
+ * Document Export Engine for PaperGen
  * Generates publication-ready PDF and Microsoft Word (.doc) files natively with zero external runtime dependencies.
  */
 
@@ -102,8 +102,8 @@ export function generatePdfBlob(title: string, content: string, metadata?: Docum
       // Header banner on first page
       streamParts.push(`BT /F1 16 Tf 50 780 Td (${cleanTitle}) Tj ET`);
       const subtitle = metadata?.syllabus
-        ? `PaperCraft Examination - ${metadata.syllabus} (${metadata.subject || 'Standard'})`
-        : 'PaperCraft AI Studio - Official Examination Paper';
+        ? `PaperGen Examination - ${metadata.syllabus} (${metadata.subject || 'Standard'})`
+        : 'PaperGen AI Studio - Official Examination Paper';
       streamParts.push(`BT /F1 9 Tf 50 760 Td (${subtitle}) Tj ET`);
       y = 720;
     } else {
@@ -241,7 +241,7 @@ export function generateDocBlob(title: string, content: string, metadata?: Docum
   </div>
 
   <div style="margin-top:30pt; padding-top:10pt; border-top:1pt solid #cbd5e1; font-size:9pt; color:#94a3b8; text-align:center;">
-    Generated autonomously by PaperCraft AI Studio & Prompt2Paper Engineering Engine.
+    Generated autonomously by PaperGen AI Studio Engineering Engine.
   </div>
 </body>
 </html>

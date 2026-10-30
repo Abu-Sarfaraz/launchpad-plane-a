@@ -1,15 +1,15 @@
 import React from 'react';
 import { describe, it, expect } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { HeroLaunchPad } from '@/components/marketing/HeroLaunchPad';
+import { HeroPaperGen } from '@/components/marketing/HeroPaperGen';
 import { FeatureGrid3Col } from '@/components/marketing/FeatureGrid3Col';
 import { GlassPricingTable } from '@/components/marketing/GlassPricingTable';
 import { TestimonialsCarousel } from '@/components/marketing/TestimonialsCarousel';
 import { ResponsiveFooter } from '@/components/marketing/ResponsiveFooter';
 
 describe('Phase 3 Plane A UI: Marketing Components', () => {
-  it('renders HeroLaunchPad with orbital badge, H1, and dual CTAs', () => {
-    render(<HeroLaunchPad />);
+  it('renders HeroPaperGen with orbital badge, H1, and dual CTAs', () => {
+    render(<HeroPaperGen />);
     expect(screen.getByText(/Orbital Infrastructure Active/i)).toBeInTheDocument();
     expect(screen.getByText(/Space-Tech Cloud/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Get Started/i })).toBeInTheDocument();

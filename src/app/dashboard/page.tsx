@@ -42,7 +42,7 @@ export default function DashboardPage() {
         {/* 4 KPI Telemetry Cards */}
         <TopStatsCards />
 
-        {/* Interactive PaperCraft Studio (Autonomous Paper Generator & PDF/DOC Exporter) */}
+        {/* Interactive PaperGen Studio (Autonomous Paper Generator & PDF/DOC Exporter) */}
         <PaperStudio />
 
         {/* Paginated Sortable Data Table */}

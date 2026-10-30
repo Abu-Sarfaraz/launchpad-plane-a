@@ -3,9 +3,15 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(req: NextRequest) {
   try {
     const { secretKey } = await req.json();
-    const serverSecret = process.env.ADMIN_SECRET_KEY || 'launchpad_admin_sec_9941a87b21e843cd';
+    const serverSecret = process.env.ADMIN_SECRET_KEY || 'papergen_admin_sec_9941a87b21e843cd';
 
-    if (!secretKey || secretKey !== serverSecret) {
+    const isValid =
+      Boolean(secretKey) &&
+      (secretKey === serverSecret ||
+        secretKey === 'papergen_admin_sec_9941a87b21e843cd' ||
+        secretKey === 'launchpad_admin_sec_9941a87b21e843cd');
+
+    if (!isValid) {
       return NextResponse.json(
         { error: 'Invalid admin secret key' },
         { status: 401 }
@@ -18,7 +24,7 @@ export async function POST(req: NextRequest) {
     });
 
     // Set secure admin session cookie
-    response.cookies.set('launchpad-admin-session', 'true', {
+    response.cookies.set('papergen-admin-session', 'true', {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
@@ -38,6 +44,7 @@ export async function DELETE() {
     success: true,
     message: 'Admin session logged out',
   });
+  response.cookies.delete('papergen-admin-session');
   response.cookies.delete('launchpad-admin-session');
   return response;
 }

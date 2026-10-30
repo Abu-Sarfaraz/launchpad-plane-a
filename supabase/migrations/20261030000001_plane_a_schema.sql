@@ -1,4 +1,4 @@
--- Plane A Schema Migration: LaunchPad MVP
+-- Plane A Schema Migration: PaperGen MVP
 -- Enforces multi-tenant RLS through public.memberships across all tables
 
 -- 1. Helper functions for RLS checks (SECURITY DEFINER to avoid infinite recursion)

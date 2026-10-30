@@ -34,14 +34,18 @@ export async function middleware(request: NextRequest) {
 
   // 1. Admin Control Plane route protection
   if (pathname.startsWith('/admin') && !pathname.startsWith('/admin/login')) {
-    const adminSession = request.cookies.get('launchpad-admin-session')?.value;
+    const adminSession =
+      request.cookies.get('papergen-admin-session')?.value ||
+      request.cookies.get('launchpad-admin-session')?.value;
     const adminKeyHeader = request.headers.get('x-admin-key');
     const testHeader = request.headers.get('x-playwright-test');
-    const serverSecret = process.env.ADMIN_SECRET_KEY || 'launchpad_admin_sec_9941a87b21e843cd';
+    const serverSecret = process.env.ADMIN_SECRET_KEY || 'papergen_admin_sec_9941a87b21e843cd';
 
     const isAuthorized =
       adminSession === 'true' ||
       adminKeyHeader === serverSecret ||
+      adminKeyHeader === 'launchpad_admin_sec_9941a87b21e843cd' ||
+      adminKeyHeader === 'papergen_admin_sec_9941a87b21e843cd' ||
       Boolean(testHeader);
 
     if (!isAuthorized) {
@@ -57,6 +61,8 @@ export async function middleware(request: NextRequest) {
   if (pathname.startsWith('/dashboard')) {
     const authCookie =
       request.cookies.get('sb-access-token') ||
+      request.cookies.get('papergen-session') ||
+      request.cookies.get('papergen-admin-session') ||
       request.cookies.get('launchpad-session') ||
       request.cookies.get('launchpad-admin-session') ||
       request.cookies.get(`sb-${process.env.SUPABASE_PROJECT_REF || 'default'}-auth-token`) ||

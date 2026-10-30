@@ -91,7 +91,7 @@ describe('Phase 4: Auth Redirects and Payments Webhooks', () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'x-launchpad-signature': 'invalid_signature_hash',
+          'x-papergen-signature': 'invalid_signature_hash',
         },
         body: JSON.stringify(payload),
       });
@@ -124,7 +124,7 @@ describe('Phase 4: Auth Redirects and Payments Webhooks', () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'x-launchpad-signature': 'test_valid_signature',
+          'x-papergen-signature': 'test_valid_signature',
         },
         body: JSON.stringify(payload),
       });

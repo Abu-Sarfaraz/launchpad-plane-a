@@ -17,10 +17,10 @@ import { Button } from '@/components/ui/Button';
 import { FriendlyAlert } from '@/components/ui/FriendlyAlert';
 import { toFriendlyError, FriendlyError } from '@/lib/errors/friendlyErrors';
 import { downloadAsPdf, downloadAsDoc } from '@/lib/export/documents';
-import { AutoMockBuilder } from '@/components/papercraft/AutoMockBuilder';
-import { QuestionBankExplorer } from '@/components/papercraft/QuestionBankExplorer';
-import { BrandingSettingsModal } from '@/components/papercraft/BrandingSettingsModal';
-import { BrandingConfig } from '@/lib/papercraft/types';
+import { AutoMockBuilder } from '@/components/papergen/AutoMockBuilder';
+import { QuestionBankExplorer } from '@/components/papergen/QuestionBankExplorer';
+import { BrandingSettingsModal } from '@/components/papergen/BrandingSettingsModal';
+import { BrandingConfig } from '@/lib/papergen/types';
 import { MathRenderer } from '@/components/ui/MathRenderer';
 
 export function PaperStudio() {
@@ -172,7 +172,7 @@ Format the response cleanly with clear section headings:
           <div className="flex items-center gap-2 mb-1">
             <span className="w-2 h-2 rounded-full bg-accent-cyan animate-pulse" />
             <span className="text-xs font-mono text-accent-cyan uppercase tracking-wider">
-              PaperCraft AI Studio & Blueprint Hub
+              PaperGen AI Studio & Blueprint Hub
             </span>
           </div>
           <h2 className="text-xl md:text-2xl font-bold text-white tracking-tight flex items-center gap-2.5">

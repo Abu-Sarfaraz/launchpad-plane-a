@@ -74,7 +74,7 @@ export default function NotFoundPage() {
             className="inline-flex items-center gap-2 text-xs font-mono text-text-muted hover:text-accent-cyan transition-colors"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
-            <span>Back to LaunchPad main entrance</span>
+            <span>Back to PaperGen main entrance</span>
           </Link>
         </div>
       </div>

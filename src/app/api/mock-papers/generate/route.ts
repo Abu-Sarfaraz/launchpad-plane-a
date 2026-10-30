@@ -4,11 +4,11 @@ import { createClient } from '@/lib/supabase/server';
 import {
   DEFAULT_FALLBACK_QUESTIONS,
   generateMockPaper,
-} from '@/lib/papercraft/generator';
+} from '@/lib/papergen/generator';
 import {
   MockPaperGenerationOptions,
   Question,
-} from '@/lib/papercraft/types';
+} from '@/lib/papergen/types';
 import { toFriendlyError } from '@/lib/errors/friendlyErrors';
 
 const generateOptionsSchema = z.object({

@@ -16,7 +16,7 @@ export default function GlobalErrorBoundary({
 
   useEffect(() => {
     // Log unexpected errors safely to client console
-    console.error('[LaunchPad Telemetry Exception]:', error);
+    console.error('[PaperGen Telemetry Exception]:', error);
   }, [error]);
 
   return (

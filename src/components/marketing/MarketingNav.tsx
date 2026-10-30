@@ -18,7 +18,7 @@ export function MarketingNav() {
           </div>
           <div className="flex flex-col">
             <span className="font-display font-bold text-lg text-text-primary tracking-tight">
-              LaunchPad
+              PaperGen
             </span>
             <span className="font-mono text-[9px] text-accent-cyan tracking-widest -mt-1">
               ORBITAL MESH

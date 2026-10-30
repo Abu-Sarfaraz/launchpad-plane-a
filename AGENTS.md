@@ -1,4 +1,4 @@
-# AGENTS.md: LaunchPad Plane A (MVP)
+# AGENTS.md: PaperGen Plane A (MVP)
 
 ## Scope
 Build Plane A only: marketing site, auth, pricing and checkout, customer dashboard.

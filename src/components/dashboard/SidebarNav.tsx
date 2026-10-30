@@ -24,7 +24,7 @@ interface SidebarNavProps {
 }
 
 export function SidebarNav({
-  userEmail = 'astronaut@launchpad.space',
+  userEmail = 'educator@papergen.ai',
   orgName = 'AetherSpace Org',
 }: SidebarNavProps) {
   const [collapsed, setCollapsed] = useState(false);
@@ -56,7 +56,7 @@ export function SidebarNav({
             {!collapsed && (
               <div className="flex flex-col truncate">
                 <span className="font-display font-bold text-sm text-text-primary tracking-tight truncate">
-                  LaunchPad
+                  PaperGen
                 </span>
                 <span className="font-mono text-[9px] text-accent-cyan tracking-widest truncate">
                   TELEMETRY HUB

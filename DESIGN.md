@@ -1,7 +1,7 @@
-# DESIGN.md: LaunchPad Design System (v1.0, Plane A)
+# DESIGN.md: PaperGen Design System (v1.0, Plane A)
 
 ## 1. Brand
-Product: LaunchPad. Style: deep orbital glassmorphism. Midnight backgrounds, neon purple accents, translucent surfaces, telemetry-style typography.
+Product: PaperGen. Style: deep orbital glassmorphism. Midnight backgrounds, neon purple accents, translucent surfaces, telemetry-style typography.
 
 ## 2. Colors (W3C tokens)
 - --bg-midnight-950: #060814

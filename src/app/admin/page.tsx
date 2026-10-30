@@ -260,7 +260,7 @@ export default function AdminDashboardPage() {
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-base font-bold text-white tracking-tight">LaunchPad Control Plane</h1>
+              <h1 className="text-base font-bold text-white tracking-tight">PaperGen Control Plane</h1>
               <span className="px-2 py-0.5 text-[10px] font-semibold bg-accent-cyan/15 text-accent-cyan border border-accent-cyan/30 rounded-full uppercase tracking-wider">
                 Admin
               </span>

@@ -132,7 +132,7 @@ function AuthContent() {
             <Rocket className="w-5 h-5" />
           </div>
           <span className="font-display font-bold text-2xl text-text-primary tracking-tight">
-            LaunchPad
+            PaperGen
           </span>
         </Link>
         <p className="font-sans text-sm text-text-secondary">
@@ -256,7 +256,7 @@ function AuthContent() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="astronaut@launchpad.space"
+                placeholder="educator@papergen.ai"
                 className="w-full pl-9 pr-4 py-2.5 bg-midnight-900 border border-surface-border rounded-control text-sm text-text-primary placeholder:text-text-secondary focus:outline-none focus:border-accent-purple font-sans"
                 required
               />

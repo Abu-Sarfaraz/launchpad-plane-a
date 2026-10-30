@@ -1,4 +1,4 @@
-# Prompt2Paper & LaunchPad Plane A: Harmonized Enterprise AI Studio
+# PaperGen: Autonomous AI Exam & Academic Paper Studio
 
 > **Autonomous Examination Paper Synthesis, Relational Question Banking, 1-Click Atomic Question Swapping with Mark Scheme Sync, KaTeX Mathematical Vector Rendering, Multi-Provider AI Fallback Engine (Google Gemini 2.5 Flash & OpenRouter), Supabase Multi-Tenant PostgreSQL with Strict RLS, and Zero-Dependency PDF/DOC Export.**
 
@@ -15,16 +15,16 @@
 
 ## 🎯 Unified System Architecture
 
-Prompt2Paper unites two world-class system architectures into a single, cohesive, enterprise-grade SaaS platform:
+PaperGen provides a cohesive, enterprise-grade full-stack platform:
 
-1. **LaunchPad Plane A (MVP Core)**:
+1. **PaperGen SaaS Platform Architecture (Plane A MVP Core)**:
    - Modern Next.js 15 App Router architecture with React 19, TypeScript strict mode, and Radix UI.
    - Supabase multi-tenant PostgreSQL with Row Level Security (RLS) across all tables (`organizations`, `memberships`, `profiles`, `projects`, `orders`, `deployment_logs`).
    - Enterprise **Admin Control Plane** (`/admin`) for telemetry, diagnostic connectivity checks, order status control, and user role management.
    - **Multi-Provider AI Fallback Engine** (`/api/ai/generate`) utilizing Google Gemini 2.5 Flash as primary inference and OpenRouter as hot-standby fallback.
    - Zero-dependency client-side PDF (`%PDF-1.4`) and Word (`.doc`) binary generators.
 
-2. **PaperCraft AI Studio Blueprint**:
+2. **PaperGen AI Studio Engine**:
    - **Relational Question Bank** (`questions_bank`) populated with official Cambridge CAIE (O-Level 4024 / A-Level 9702) structured questions.
    - **KaTeX Mathematical Equation Engine** rendering vector-sharp fractions, radicals, quadratic formulas, matrices, and geometry coordinates without pixelation or PDF print breakage.
    - **Cognitive Difficulty Distribution Curves**:
@@ -47,7 +47,7 @@ Prompt2Paper unites two world-class system architectures into a single, cohesive
 └─────────────────────┬─────────────────────┬────────────────────────────────────┬───────┘
                       │                     │                                    │
 ┌─────────────────────▼───────┐ ┌───────────▼──────────────────────┐ ┌───────────▼───────┐
-│ Multi-Provider AI Fallback  │ │ PaperCraft AI Studio Engine      │ │ Admin Control     │
+│ Multi-Provider AI Fallback  │ │ PaperGen AI Studio Engine          │ │ Admin Control     │
 │ - Google Gemini 2.5 Flash   │ │ - Relational Question Bank       │ │ - System Health   │
 │       ↓ (Hot Failover)      │ │ - 1-Click Atomic Question Swap   │ │ - User Directory  │
 │ - OpenRouter Secondary      │ │ - KaTeX Mathematical Renderer    │ │ - Order Auditing  │
@@ -134,9 +134,9 @@ Every table is locked down with PostgreSQL Row Level Security:
 ```bash
 npm run test
 ```
-- `tests/unit/papercraft-generator.test.ts`: Validates difficulty distribution curves, topic checklists, target marks matching, candidate rotation, and 1-click atomic swap state integrity.
+- `tests/unit/papergen-generator.test.ts`: Validates difficulty distribution curves, topic checklists, target marks matching, candidate rotation, and 1-click atomic swap state integrity.
 - `tests/unit/katex-math.test.ts`: Validates KaTeX equation formatting, fractions, display formulas, un-delimited environments, mixed text parsing, and error-tolerant fallbacks.
-- `tests/unit/papercraft-api.test.ts`: Validates `/api/questions`, `/api/questions/swap`, and `/api/mock-papers/generate` API routes.
+- `tests/unit/papergen-api.test.ts`: Validates `/api/questions`, `/api/questions/swap`, and `/api/mock-papers/generate` API routes.
 - `tests/unit/dashboard-components.test.tsx`: Validates `PaperStudio`, `SidebarNav`, and document export triggers.
 - `tests/unit/ai-client.test.ts`: Validates Gemini primary inference and OpenRouter fallback mechanism.
 - `tests/unit/document-export.test.ts`: Validates binary PDF and Word (.doc) generation without external dependencies.
@@ -180,7 +180,7 @@ ADMIN_SECRET_KEY=<your-secure-admin-secret>
 ### 3. Database Migrations
 Migrations are managed in `supabase/migrations/`:
 - `20261030000001_plane_a_schema.sql`: Core multi-tenant organizations, profiles, projects, orders.
-- `20261030000002_papercraft_studio_schema.sql`: Question bank, institutes, mock papers, generated PDFs, with 15 seed Cambridge questions.
+- `20261030000002_papergen_studio_schema.sql`: Question bank, institutes, mock papers, generated PDFs, with 15 seed Cambridge questions.
 
 All migrations are verified against `scripts/hooks/sql-rls-circuit-breaker.mjs` before application.
 
@@ -193,7 +193,7 @@ npm install
 npm run dev
 ```
 
-Visit [http://localhost:3000](http://localhost:3000) for the marketing launchpad and [http://localhost:3000/dashboard](http://localhost:3000/dashboard) for the PaperCraft AI Studio.
+Visit [http://localhost:3000](http://localhost:3000) for the PaperGen marketing portal and [http://localhost:3000/dashboard](http://localhost:3000/dashboard) for the PaperGen AI Studio.
 
 ---
 

@@ -9,19 +9,19 @@ import { PaperStudio } from '@/components/dashboard/PaperStudio';
 
 describe('Phase 3 Plane A UI: Dashboard Components', () => {
   it('renders SidebarNav and toggles collapsed state', () => {
-    render(<SidebarNav userEmail="cadet@launchpad.space" orgName="Orbital Lab" />);
+    render(<SidebarNav userEmail="cadet@papergen.space" orgName="Orbital Lab" />);
     expect(screen.getByText('Mission Overview')).toBeInTheDocument();
-    expect(screen.getByText('cadet@launchpad.space')).toBeInTheDocument();
+    expect(screen.getByText('cadet@papergen.space')).toBeInTheDocument();
 
     const collapseBtn = screen.getByRole('button', { name: /Collapse Sidebar/i });
     fireEvent.click(collapseBtn);
 
     // When collapsed, full text is hidden
-    expect(screen.queryByText('cadet@launchpad.space')).not.toBeInTheDocument();
+    expect(screen.queryByText('cadet@papergen.space')).not.toBeInTheDocument();
 
     const expandBtn = screen.getByRole('button', { name: /Expand Sidebar/i });
     fireEvent.click(expandBtn);
-    expect(screen.getByText('cadet@launchpad.space')).toBeInTheDocument();
+    expect(screen.getByText('cadet@papergen.space')).toBeInTheDocument();
   });
 
   it('renders TopStatsCards with all 4 KPI cards', () => {

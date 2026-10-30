@@ -4,10 +4,10 @@ import {
   swapQuestion,
   DEFAULT_FALLBACK_QUESTIONS,
   DIFFICULTY_CURVES,
-} from '@/lib/papercraft/generator';
-import { MockPaperGenerationOptions } from '@/lib/papercraft/types';
+} from '@/lib/papergen/generator';
+import { MockPaperGenerationOptions } from '@/lib/papergen/types';
 
-describe('PaperCraft Auto Mock Generator & 1-Click Swap Engine', () => {
+describe('PaperGen Auto Mock Generator & 1-Click Swap Engine', () => {
   const baseOptions: MockPaperGenerationOptions = {
     title: 'Cambridge Mathematics D Mock',
     subject: 'Mathematics D',

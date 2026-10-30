@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import '@/styles/globals.css';
 
 export const metadata: Metadata = {
-  title: 'LaunchPad — Space-Tech Cloud Acceleration',
-  description: 'Next-generation orbital infrastructure and deployment control plane.',
+  title: 'PaperGen — AI-Powered Exam & Worksheet Studio',
+  description: 'Next-generation AI examination paper generator and academic worksheet studio.',
 };
 
 export default function RootLayout({

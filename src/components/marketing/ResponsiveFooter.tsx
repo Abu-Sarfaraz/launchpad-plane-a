@@ -16,7 +16,7 @@ export function ResponsiveFooter() {
                 <Rocket className="w-4 h-4" />
               </div>
               <span className="font-display font-bold text-lg text-text-primary">
-                LaunchPad
+                PaperGen
               </span>
             </Link>
             <p className="font-sans text-xs text-text-secondary leading-relaxed mb-4">
@@ -118,7 +118,7 @@ export function ResponsiveFooter() {
 
         <div className="border-t border-surface-border pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-text-secondary gap-4 font-mono">
           <div>
-            © {new Date().getFullYear()} LaunchPad OmniStudio. All rights reserved.
+            © {new Date().getFullYear()} PaperGen. All rights reserved.
           </div>
           <div className="flex items-center gap-6">
             <span>DESIGN.md Token Verified</span>

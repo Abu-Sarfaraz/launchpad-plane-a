@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
-import { DEFAULT_FALLBACK_QUESTIONS, swapQuestion } from '@/lib/papercraft/generator';
-import { MockPaper, Question } from '@/lib/papercraft/types';
+import { DEFAULT_FALLBACK_QUESTIONS, swapQuestion } from '@/lib/papergen/generator';
+import { MockPaper, Question } from '@/lib/papergen/types';
 import { toFriendlyError } from '@/lib/errors/friendlyErrors';
 
 export async function POST(req: NextRequest) {

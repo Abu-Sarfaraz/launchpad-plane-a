@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
-import { DEFAULT_FALLBACK_QUESTIONS } from '@/lib/papercraft/generator';
-import { Question } from '@/lib/papercraft/types';
+import { DEFAULT_FALLBACK_QUESTIONS } from '@/lib/papergen/generator';
+import { Question } from '@/lib/papergen/types';
 
 export async function GET(req: NextRequest) {
   try {

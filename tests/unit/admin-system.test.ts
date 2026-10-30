@@ -47,7 +47,7 @@ describe('Admin Authentication & Control Plane Endpoints', () => {
 
     const body = await res.json();
     expect(body.success).toBe(true);
-    expect(res.cookies.get('launchpad-admin-session')?.value).toBe('true');
+    expect(res.cookies.get('papergen-admin-session')?.value).toBe('true');
   });
 
   it('rejects authentication with invalid secret key with 401', async () => {

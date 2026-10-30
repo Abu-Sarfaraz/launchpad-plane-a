@@ -1,4 +1,4 @@
--- Migration: PaperCraft AI Studio Relational Question Bank, Institutes, Mock Papers, and Generated PDFs
+-- Migration: PaperGen AI Studio Relational Question Bank, Institutes, Mock Papers, and Generated PDFs
 -- Enforces strict Row Level Security (RLS) across all tables
 
 -- 1. questions_bank Table

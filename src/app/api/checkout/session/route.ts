@@ -21,7 +21,7 @@ export async function POST(request: Request) {
     const amountCents =
       billingCycle === 'annual' ? pricing.annualCents : pricing.monthlyCents;
 
-    const sessionId = `cs_launchpad_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+    const sessionId = `cs_papergen_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
 
     // Try to record pending order in orders table
     try {

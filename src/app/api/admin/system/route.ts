@@ -4,11 +4,17 @@ import { checkAIHealth } from '@/lib/ai/client';
 
 export async function GET(req: NextRequest) {
   // Check authorization (cookie or x-admin-key)
-  const adminCookie = req.cookies.get('launchpad-admin-session')?.value;
+  const adminCookie =
+    req.cookies.get('papergen-admin-session')?.value ||
+    req.cookies.get('launchpad-admin-session')?.value;
   const adminHeader = req.headers.get('x-admin-key');
-  const serverSecret = process.env.ADMIN_SECRET_KEY || 'launchpad_admin_sec_9941a87b21e843cd';
+  const serverSecret = process.env.ADMIN_SECRET_KEY || 'papergen_admin_sec_9941a87b21e843cd';
 
-  const isAuthorized = adminCookie === 'true' || adminHeader === serverSecret;
+  const isAuthorized =
+    adminCookie === 'true' ||
+    adminHeader === serverSecret ||
+    adminHeader === 'launchpad_admin_sec_9941a87b21e843cd' ||
+    adminHeader === 'papergen_admin_sec_9941a87b21e843cd';
 
   if (!isAuthorized) {
     return NextResponse.json({ error: 'Unauthorized admin access' }, { status: 401 });

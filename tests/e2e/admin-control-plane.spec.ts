@@ -12,12 +12,12 @@ test.describe('Admin Control Plane E2E Flow', () => {
   test('authenticates via admin secret key and reaches control plane', async ({ page }) => {
     await page.goto('/admin/login');
 
-    await page.getByLabel(/Admin Secret Key/i).fill('launchpad_admin_sec_9941a87b21e843cd');
+    await page.getByLabel(/Admin Secret Key/i).fill('papergen_admin_sec_9941a87b21e843cd');
     await page.getByRole('button', { name: /Verify & Enter Admin Console/i }).click();
 
     // Verify redirected to /admin
     await expect(page).toHaveURL(/.*\/admin/);
-    await expect(page.getByRole('heading', { name: /LaunchPad Control Plane/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /PaperGen Control Plane/i })).toBeVisible();
 
     // Check all 4 management tabs exist
     await expect(page.getByRole('button', { name: /AI Engine & Fallback Studio/i })).toBeVisible();

@@ -15,7 +15,7 @@ interface Testimonial {
 const testimonials: Testimonial[] = [
   {
     quote:
-      'LaunchPad reduced our orbital telemetry deployment cycle from three weeks to 45 seconds. The multi-tenant RLS guarantees our mission datasets stay strictly segregated.',
+      'PaperGen reduced our orbital telemetry deployment cycle from three weeks to 45 seconds. The multi-tenant RLS guarantees our mission datasets stay strictly segregated.',
     author: 'Commander Sarah Jenkins',
     role: 'VP of Flight Systems',
     company: 'AetherSpace Dynamics',
@@ -33,7 +33,7 @@ const testimonials: Testimonial[] = [
   },
   {
     quote:
-      'We replaced our fragile homegrown CI/CD scripts with LaunchPad. The automated verification and audit advisory checks caught 4 potential leaks before launch.',
+      'We replaced our fragile homegrown CI/CD scripts with PaperGen. The automated verification and audit advisory checks caught 4 potential leaks before launch.',
     author: 'Elena Rostova',
     role: 'Chief Security Officer',
     company: 'Hyperion Deep Space',

@@ -3,10 +3,10 @@ import { NextRequest } from 'next/server';
 import { GET as getQuestions } from '@/app/api/questions/route';
 import { POST as swapQuestionRoute } from '@/app/api/questions/swap/route';
 import { POST as generateMockPaperRoute } from '@/app/api/mock-papers/generate/route';
-import { DEFAULT_FALLBACK_QUESTIONS } from '@/lib/papercraft/generator';
-import { MockPaper } from '@/lib/papercraft/types';
+import { DEFAULT_FALLBACK_QUESTIONS } from '@/lib/papergen/generator';
+import { MockPaper } from '@/lib/papergen/types';
 
-describe('PaperCraft API Endpoints', () => {
+describe('PaperGen API Endpoints', () => {
   it('GET /api/questions returns questions list with filters', async () => {
     const req = new NextRequest('http://localhost:3000/api/questions?topic=Number%20%26%20Arithmetic');
     const res = await getQuestions(req);

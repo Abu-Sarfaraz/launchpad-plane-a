@@ -39,13 +39,13 @@ describe('Phase 2 Database Schema & Types', () => {
     type OrgRow = Database['public']['Tables']['organizations']['Row'];
     const mockOrg: OrgRow = {
       id: '00000000-0000-0000-0000-000000000001',
-      name: 'LaunchPad Alpha',
-      slug: 'launchpad-alpha',
+      name: 'PaperGen Alpha',
+      slug: 'papergen-alpha',
       billing_tier: 'pro',
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     };
-    expect(mockOrg.name).toBe('LaunchPad Alpha');
+    expect(mockOrg.name).toBe('PaperGen Alpha');
     expect(mockOrg.billing_tier).toBe('pro');
   });
 
@@ -69,7 +69,7 @@ describe('Phase 2 Database Schema & Types', () => {
       name: 'Orbital Telemetry Site',
       slug: 'orbital-telemetry',
       stitch_project_id: 'stitch-12345',
-      github_repo_url: 'https://github.com/launchpad/orbital',
+      github_repo_url: 'https://github.com/papergen/orbital',
       vercel_project_id: 'prj_12345',
       design_md: '# DESIGN.md',
       created_at: new Date().toISOString(),
