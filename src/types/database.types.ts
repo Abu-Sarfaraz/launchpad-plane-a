@@ -165,6 +165,7 @@ export type Database = {
           email: string
           full_name: string | null
           id: string
+          is_super_admin: boolean
           preferences: Json
           updated_at: string
         }
@@ -174,6 +175,7 @@ export type Database = {
           email: string
           full_name?: string | null
           id: string
+          is_super_admin?: boolean
           preferences?: Json
           updated_at?: string
         }
@@ -183,6 +185,7 @@ export type Database = {
           email?: string
           full_name?: string | null
           id?: string
+          is_super_admin?: boolean
           preferences?: Json
           updated_at?: string
         }
@@ -240,11 +243,16 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      bootstrap_first_admin: {
+        Args: { admin_user_id: string }
+        Returns: boolean
+      }
       is_org_admin: { Args: { org_id: string; uid?: string }; Returns: boolean }
       is_org_member: {
         Args: { org_id: string; uid?: string }
         Returns: boolean
       }
+      is_platform_admin: { Args: { uid?: string }; Returns: boolean }
       porikkhon: { Args: { action: string; data?: Json }; Returns: Json }
       porikkhon_leaderboard: { Args: never; Returns: Json }
       porikkhon_payment_confirm: {

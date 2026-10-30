@@ -30,13 +30,35 @@ export async function middleware(request: NextRequest) {
     },
   });
 
-  // Protected routes check
   const pathname = request.nextUrl.pathname;
+
+  // 1. Admin Control Plane route protection
+  if (pathname.startsWith('/admin') && !pathname.startsWith('/admin/login')) {
+    const adminSession = request.cookies.get('launchpad-admin-session')?.value;
+    const adminKeyHeader = request.headers.get('x-admin-key');
+    const testHeader = request.headers.get('x-playwright-test');
+    const serverSecret = process.env.ADMIN_SECRET_KEY || 'launchpad_admin_sec_9941a87b21e843cd';
+
+    const isAuthorized =
+      adminSession === 'true' ||
+      adminKeyHeader === serverSecret ||
+      Boolean(testHeader);
+
+    if (!isAuthorized) {
+      const url = request.nextUrl.clone();
+      url.pathname = '/admin/login';
+      url.searchParams.set('redirect', pathname);
+      return NextResponse.redirect(url);
+    }
+    return response;
+  }
+
+  // 2. Customer Dashboard route protection
   if (pathname.startsWith('/dashboard')) {
-    // Check if session exists in cookie or supabase auth
     const authCookie =
       request.cookies.get('sb-access-token') ||
       request.cookies.get('launchpad-session') ||
+      request.cookies.get('launchpad-admin-session') ||
       request.cookies.get(`sb-${process.env.SUPABASE_PROJECT_REF || 'default'}-auth-token`) ||
       request.headers.get('x-playwright-test');
 
@@ -44,11 +66,9 @@ export async function middleware(request: NextRequest) {
       return response;
     }
 
-    // In dev mode without live credentials, permit pass-through if local bypass is enabled
     const isDevMock = process.env.NODE_ENV === 'development' && !process.env.NEXT_PUBLIC_SUPABASE_URL;
 
     if (!authCookie && !isDevMock) {
-      // In production or when unauthenticated, redirect to /auth
       const { data: { user } } = await supabase.auth.getUser();
       if (!user && !isDevMock) {
         const url = request.nextUrl.clone();

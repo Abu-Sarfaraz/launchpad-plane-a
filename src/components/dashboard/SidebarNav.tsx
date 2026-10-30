@@ -15,6 +15,7 @@ import {
   ChevronRight,
   LogOut,
   ShieldCheck,
+  ShieldAlert,
 } from 'lucide-react';
 
 interface SidebarNavProps {
@@ -35,6 +36,7 @@ export function SidebarNav({
     { name: 'Telemetry Stream', href: '/dashboard/telemetry', icon: Activity },
     { name: 'Deployment Logs', href: '/dashboard/deployments', icon: Terminal },
     { name: 'Billing & Plan', href: '/dashboard/billing', icon: CreditCard },
+    { name: 'Admin Control Plane', href: '/admin', icon: ShieldAlert },
     { name: 'Security & RLS', href: '/dashboard/settings', icon: Settings },
   ];
 
