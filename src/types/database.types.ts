@@ -52,6 +52,89 @@ export type Database = {
           },
         ]
       }
+      generated_pdfs: {
+        Row: {
+          created_at: string
+          download_url: string | null
+          file_name: string
+          file_size_bytes: number
+          id: string
+          include_mark_scheme: boolean
+          mock_paper_id: string
+          storage_path: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          download_url?: string | null
+          file_name: string
+          file_size_bytes?: number
+          id?: string
+          include_mark_scheme?: boolean
+          mock_paper_id: string
+          storage_path?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          download_url?: string | null
+          file_name?: string
+          file_size_bytes?: number
+          id?: string
+          include_mark_scheme?: boolean
+          mock_paper_id?: string
+          storage_path?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "generated_pdfs_mock_paper_id_fkey"
+            columns: ["mock_paper_id"]
+            isOneToOne: false
+            referencedRelation: "mock_papers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      institutes: {
+        Row: {
+          created_at: string
+          id: string
+          logo_storage_path: string | null
+          logo_url: string | null
+          name: string
+          official_cover_page_enabled: boolean
+          owner_id: string
+          student_header_enabled: boolean
+          subtitle: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          logo_storage_path?: string | null
+          logo_url?: string | null
+          name: string
+          official_cover_page_enabled?: boolean
+          owner_id: string
+          student_header_enabled?: boolean
+          subtitle?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          logo_storage_path?: string | null
+          logo_url?: string | null
+          name?: string
+          official_cover_page_enabled?: boolean
+          owner_id?: string
+          student_header_enabled?: boolean
+          subtitle?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       memberships: {
         Row: {
           created_at: string
@@ -80,6 +163,59 @@ export type Database = {
             columns: ["organization_id"]
             isOneToOne: false
             referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mock_papers: {
+        Row: {
+          branding_config: Json
+          created_at: string
+          difficulty_profile: string
+          duration_minutes: number
+          id: string
+          institute_id: string | null
+          question_ids: Json
+          questions_snapshot: Json
+          target_marks: number
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          branding_config?: Json
+          created_at?: string
+          difficulty_profile?: string
+          duration_minutes?: number
+          id?: string
+          institute_id?: string | null
+          question_ids?: Json
+          questions_snapshot?: Json
+          target_marks?: number
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          branding_config?: Json
+          created_at?: string
+          difficulty_profile?: string
+          duration_minutes?: number
+          id?: string
+          institute_id?: string | null
+          question_ids?: Json
+          questions_snapshot?: Json
+          target_marks?: number
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mock_papers_institute_id_fkey"
+            columns: ["institute_id"]
+            isOneToOne: false
+            referencedRelation: "institutes"
             referencedColumns: ["id"]
           },
         ]
@@ -237,6 +373,51 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      questions_bank: {
+        Row: {
+          code: string
+          created_at: string
+          curriculum: string
+          difficulty_level: string
+          id: string
+          latex_prompt: string
+          mark_scheme_latex: string
+          marks: number
+          subject_code: string
+          subject_name: string
+          topic_category: string
+          updated_at: string
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          curriculum?: string
+          difficulty_level: string
+          id?: string
+          latex_prompt: string
+          mark_scheme_latex: string
+          marks?: number
+          subject_code?: string
+          subject_name?: string
+          topic_category: string
+          updated_at?: string
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          curriculum?: string
+          difficulty_level?: string
+          id?: string
+          latex_prompt?: string
+          mark_scheme_latex?: string
+          marks?: number
+          subject_code?: string
+          subject_name?: string
+          topic_category?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
     }
     Views: {

@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&family=Space+Grotesk:wght@600;700&display=swap');
+@import 'katex/dist/katex.min.css';
 
 @tailwind base;
 @tailwind components;
@@ -73,4 +74,19 @@ body {
 
 .glow-cyan {
   box-shadow: 0 0 24px -2px rgba(6, 182, 212, 0.45);
+}
+
+@media print {
+  body {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+  .print-page-break {
+    page-break-after: always;
+    break-after: page;
+  }
+  .print-avoid-break {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
 }

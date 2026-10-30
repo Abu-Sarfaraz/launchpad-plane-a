@@ -1,230 +1,198 @@
-# LaunchPad Plane A (MVP), AI Control Plane & PaperCraft Studio
+# Prompt2Paper & LaunchPad Plane A: Harmonized Enterprise AI Studio
 
-> Enterprise Cloud Orchestration Platform, Multi-Tenant Database, Resilient Multi-Provider AI Fallback Engine (Google Gemini & OpenRouter), and Zero-Dependency PDF & DOC Export Engine.
+> **Autonomous Examination Paper Synthesis, Relational Question Banking, 1-Click Atomic Question Swapping with Mark Scheme Sync, KaTeX Mathematical Vector Rendering, Multi-Provider AI Fallback Engine (Google Gemini 2.5 Flash & OpenRouter), Supabase Multi-Tenant PostgreSQL with Strict RLS, and Zero-Dependency PDF/DOC Export.**
 
 [![Next.js](https://img.shields.io/badge/Next.js-15.1.4-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19.0.0-blue?style=for-the-badge&logo=react)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Strict_5.7.3-3178C6?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4.17-06B6D4?style=for-the-badge&logo=tailwindcss)](https://tailwindcss.com/)
+[![KaTeX](https://img.shields.io/badge/KaTeX-0.16.11-329894?style=for-the-badge&logo=latex)](https://katex.org/)
 [![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL_RLS-3ECF8E?style=for-the-badge&logo=supabase)](https://supabase.com/)
-[![Vitest](https://img.shields.io/badge/Vitest-51_Passing-6E9F18?style=for-the-badge&logo=vitest)](https://vitest.dev/)
+[![Vitest](https://img.shields.io/badge/Vitest-64_Passing-6E9F18?style=for-the-badge&logo=vitest)](https://vitest.dev/)
 [![Playwright](https://img.shields.io/badge/Playwright-24_Passing_WCAG_AA-2EAD33?style=for-the-badge&logo=playwright)](https://playwright.dev/)
 
 ---
 
-## 🚀 Architectural Overview
+## 🎯 Unified System Architecture
 
-LaunchPad Plane A is a full-stack, enterprise-grade cloud telemetry platform and autonomous AI studio constructed strictly according to `DESIGN.md` design tokens and `AGENTS.md` engineering standards.
+Prompt2Paper unites two world-class system architectures into a single, cohesive, enterprise-grade SaaS platform:
+
+1. **LaunchPad Plane A (MVP Core)**:
+   - Modern Next.js 15 App Router architecture with React 19, TypeScript strict mode, and Radix UI.
+   - Supabase multi-tenant PostgreSQL with Row Level Security (RLS) across all tables (`organizations`, `memberships`, `profiles`, `projects`, `orders`, `deployment_logs`).
+   - Enterprise **Admin Control Plane** (`/admin`) for telemetry, diagnostic connectivity checks, order status control, and user role management.
+   - **Multi-Provider AI Fallback Engine** (`/api/ai/generate`) utilizing Google Gemini 2.5 Flash as primary inference and OpenRouter as hot-standby fallback.
+   - Zero-dependency client-side PDF (`%PDF-1.4`) and Word (`.doc`) binary generators.
+
+2. **PaperCraft AI Studio Blueprint**:
+   - **Relational Question Bank** (`questions_bank`) populated with official Cambridge CAIE (O-Level 4024 / A-Level 9702) structured questions.
+   - **KaTeX Mathematical Equation Engine** rendering vector-sharp fractions, radicals, quadratic formulas, matrices, and geometry coordinates without pixelation or PDF print breakage.
+   - **Cognitive Difficulty Distribution Curves**:
+     - *Standard CAIE Curve* (30% Easy / 50% Medium / 20% Hard)
+     - *Foundation Drill* (80% Easy / 20% Medium / 0% Hard)
+     - *A\* Challenger* (15% Easy / 45% Medium / 40% Hard)
+   - **1-Click Atomic Question Swapping**: Instant question replacement that synchronizes question prompts, allocated marks, and Section B official mark schemes atomically.
+   - **Institutional Branding & Layout Engine**: Coaching institution title (e.g., `THE COACH`), faculty subtitle (e.g., `Tanas Sir`), emblem logo, candidate details header, and official Cambridge cover page instructions.
+   - **Cloud Persistence Tables** (`mock_papers`, `institutes`, `generated_pdfs`) protected with user-scoped Supabase RLS.
 
 ```
-                    ┌──────────────────────────────────────────────┐
-                    │               Client Viewports               │
-                    │   Desktop (1440px) | Tablet | Mobile (390px) │
-                    └──────────────────────┬───────────────────────┘
-                                           │
-                    ┌──────────────────────▼───────────────────────┐
-                    │       Next.js 15 App Router Edge Middleware  │
-                    │   /          /dashboard         /admin       │
-                    │  (Public)   (Tenant Auth)    (Super Admin)   │
-                    └──────┬───────────────┬──────────────┬────────┘
-                           │               │              │
-       ┌───────────────────┴──────┐        │        ┌─────┴──────────────────┐
-       │ Multi-Provider AI Engine │        │        │ Admin Control Plane    │
-       │  Gemini 2.5 Flash        │        │        │ - User & Org Directory │
-       │     ↓ (Hot Failover)     │        │        │ - Order Status Control │
-       │  OpenRouter Standby      │        │        │ - Environment Auditing │
-       └──────────────────────────┘        │        └────────────────────────┘
-                                           │
-                    ┌──────────────────────▼───────────────────────┐
-                    │         Supabase Multi-Tenant PostgreSQL     │
-                    │   - Row Level Security (RLS) on all tables   │
-                    │   - Zero Security Linter / Performance Alerts│
-                    └──────────────────────────────────────────────┘
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│                                   CLIENT VIEWPORTS                                     │
+│                  Desktop (1440px)  │  Tablet (768px)  │  Mobile (390px)                │
+└───────────────────────────────────────────┬────────────────────────────────────────────┘
+                                            │
+┌───────────────────────────────────────────▼────────────────────────────────────────────┐
+│                             NEXT.JS 15 APP ROUTER EDGE                                │
+│          / (Marketing)      │    /dashboard (Studio & Telemetry)    │    /admin        │
+└─────────────────────┬─────────────────────┬────────────────────────────────────┬───────┘
+                      │                     │                                    │
+┌─────────────────────▼───────┐ ┌───────────▼──────────────────────┐ ┌───────────▼───────┐
+│ Multi-Provider AI Fallback  │ │ PaperCraft AI Studio Engine      │ │ Admin Control     │
+│ - Google Gemini 2.5 Flash   │ │ - Relational Question Bank       │ │ - System Health   │
+│       ↓ (Hot Failover)      │ │ - 1-Click Atomic Question Swap   │ │ - User Directory  │
+│ - OpenRouter Secondary      │ │ - KaTeX Mathematical Renderer    │ │ - Order Auditing  │
+│ - Zero-dependency PDF & DOC │ │ - Institutional Branding Engine  │ │ - Secret Checks   │
+└─────────────────────────────┘ └──────────────────┬───────────────┘ └───────────────────┘
+                                                   │
+┌──────────────────────────────────────────────────▼─────────────────────────────────────┐
+│                           SUPABASE MULTI-TENANT POSTGRESQL                             │
+│  organizations  │  memberships  │  profiles       │  projects    │  orders             │
+│  questions_bank │  institutes   │  mock_papers    │  generated_pdfs                    │
+│                 * 100% TABLES PROTECTED BY ROW LEVEL SECURITY (RLS) *                  │
+└────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## ✨ Key Capabilities
+## 💎 Core Feature Highlights
 
-### 1. Multi-Provider AI Engine with Automatic Failover
-- **Primary Inference**: **Google Gemini API** (`gemini-2.5-flash`) for low-latency, high-accuracy generation.
-- **Hot Standby Backup**: **OpenRouter API** (`google/gemini-2.5-flash` / `gpt-4o-mini`) automatically triggers when Gemini encounters rate limits (HTTP 429), quota limits, network timeouts, or upstream 5xx errors.
-- **Provider Transparency**: Returns standardized metadata including active provider, model ID, latency, and whether failover occurred.
-- **Interactive Studio**: Accessible directly inside the Admin Control Plane with options to test automatic failover or force specific providers.
+### 1. Auto Mock Paper Generator & Cognitive Difficulty Profiles
+The engine intelligently synthesizes balanced examination papers matching exact target marks (25m, 30m, 50m, 100m) while adhering to pedagogical distribution curves:
+- **CAIE Standard Curve**: $30\%$ Easy, $50\%$ Medium, $20\%$ Hard.
+- **Foundation Drill**: $80\%$ Easy, $20\%$ Medium, $0\%$ Hard (focused on confidence and core numeracy).
+- **A\* Challenger**: $15\%$ Easy, $45\%$ Medium, $40\%$ Hard (multi-step proofs, non-routine problems).
+- **Topic Checklist**: Select from Number & Arithmetic, Algebra & Graphs, Geometry & Mensuration, Statistics & Probability, and Trigonometry & Vectors.
 
-### 2. Enterprise Admin Control Plane (`/admin`)
-- **System Diagnostics**: Live connectivity checks across Supabase PostgreSQL, AI providers, and environment variables without exposing raw secrets.
-- **User & Membership Management**: Real-time directory of all registered profiles, organizations, and role permissions, with 1-click Super Admin privilege toggles.
-- **Transactions & Orders**: Search and manage all checkout orders with status updates (`pending`, `completed`, `refunded`, `failed`).
-- **Protected Access**: Enforced via Route Protection Middleware requiring authenticated Super Admin credentials or `ADMIN_SECRET_KEY` tokens.
+### 2. 1-Click Atomic Question Swap Engine
+- Solves the critical **Mark Scheme Desync Defect** by maintaining an immutable unified paper state node.
+- Swapping a question replaces both the question prompt and its corresponding official marking guidelines simultaneously without altering overall allocated marks.
 
-### 3. Customer Telemetry Hub & PaperCraft AI Studio (`/dashboard`)
-- **PaperCraft AI Studio**: Autonomous exam and academic paper creator supporting CAIE IGCSE, A-Levels, Edexcel, and custom academic curricula with automated mark schemes.
-- **Instant Dual-Format Export**:
-  - **"Download as PDF"**: Client-side `%PDF-1.4` compliant multi-page A4 document generation with automatic line-wrapping, headers, footers, page numbering (`Page X of Y`), and xref tables with zero external dependencies.
-  - **"Download as DOC"**: Microsoft Word document export with native `xmlns:w='urn:schemas-microsoft-com:office:word'` XML namespaces, preserving styled headings, section demarcations, margins, and print layout.
-  - **Prominent Controls**: Available immediately both above and below generated papers, plus 1-click Markdown copying.
-- **KPI Metrics**: 4 real-time stat cards tracking cluster nodes, telemetry pings, error rates, and cloud storage.
-- **Paginated Data Table**: Filterable, sortable table for deployment logs with accessible controls.
-- **Order Tracker**: Interactive order and mission status tracking with visual milestone progress bars.
-- **Collapsible Sidebar**: 260px desktop collapsible sidebar with quick navigation to telemetry, billing, and settings.
+### 3. KaTeX Mathematical Typography
+- LaTeX formulas rendered via KaTeX (`0.16.11`) both client-side and server-side.
+- Clean formatting for fractions ($\frac{a}{b}$), radicals ($\sqrt{x^2+y^2}$), quadratic formula ($x = \frac{-b \pm \sqrt{b^2-4ac}}{2a}$), simultaneous equation systems, and vector matrices ($\vec{v} = \begin{pmatrix} 6 \\ -8 \end{pmatrix}$).
+- Embedded KaTeX CSS ensures zero missing font glyphs or layout shifts.
 
-### 4. Marketing Landing Page (`/`)
-- **Hero LaunchPad**: High-impact, dark glassmorphic hero with animated status pill and CTA triggers.
-- **Capabilities Matrix**: 3-column feature grid with hover glows and responsive typography.
-- **Glass Pricing Table**: Starter, Pro, and Enterprise tiers with an interactive Monthly / Annual toggle (20% discount).
-- **Social Proof**: Testimonials carousel featuring industry CTOs and lead architects.
-- **Responsive Footer**: Status indicators and system operational badges.
+### 4. Institutional Branding & Cambridge Cover Page
+- Custom coaching watermark & header (e.g. *THE COACH*, *Tanas Sir*).
+- Candidate details block (Candidate Name, Date, Centre Number, Candidate Number, Score box).
+- Official Cambridge Instructions to Candidates: Calculator rules, accuracy guidelines, answer space demarcations.
+- Saved directly into Supabase `public.institutes` table with user-scoped RLS.
 
-### 5. Multi-Tenant Supabase Database & Multi-Tier RLS
-- **Public Schema**: `organizations`, `memberships`, `profiles`, `projects`, `orders`, `deployment_logs`.
-- **Strict RLS**: Every table enforces Row Level Security. Policies verify membership through `public.memberships` using cached subqueries `(select auth.uid())` to eliminate `auth_rls_initplan` performance warnings.
-- **Security Definer Isolation**: Helper RPCs (`is_org_member`, `is_org_admin`, `is_platform_admin`, `bootstrap_first_admin`) have public execution revoked to prevent API exploitation.
-- **Zero Advisors Warnings**: Passed both Supabase Security and Performance Advisors with 0 public schema warnings.
+### 5. Multi-Page Vector PDF Print & Word (.doc) Export
+- **Print Sheet View**: Uses print media rules (`@media print`, `page-break-inside: avoid`, `print-avoid-break`) ensuring questions do not awkwardly slice across page boundaries.
+- **Direct PDF Vector Generation**: Instant client-side download as PDF or via browser print dialog.
+- **Microsoft Word (.doc) Generation**: Complete `.doc` export with native Word XML tags and styled headers.
+
+### 6. Multi-Provider AI Fallback Engine
+- Dual-provider strategy combining Google Gemini 2.5 Flash and OpenRouter.
+- Automatic failover upon rate limits (HTTP 429), timeouts, or downstream provider degradation.
+- Real-time latency tracking and fallback indication in generation metadata.
+
+### 7. Supabase Multi-Tenant Database & Strict RLS
+Every table is locked down with PostgreSQL Row Level Security:
+- `questions_bank`: Public/authenticated read, authenticated admin write.
+- `institutes`: `owner_id = auth.uid()`
+- `mock_papers`: `user_id = auth.uid()`
+- `generated_pdfs`: `user_id = auth.uid()`
+- `organizations`, `memberships`, `profiles`, `projects`, `orders`, `deployment_logs`: Tenant organization membership verified via `public.memberships`.
 
 ---
 
-## 🛠️ Tech Stack & Pinned Dependencies
+## 🗄️ Database Schema & RLS Policies
 
-| Layer | Technology | Exact Version |
+| Table Name | Description | Row Level Security (RLS) Policy |
 | :--- | :--- | :--- |
-| **Framework** | Next.js (App Router, Server Actions) | `15.1.4` |
-| **Runtime** | React / React DOM | `19.0.0` |
-| **Language** | TypeScript (Strict mode) | `5.7.3` |
-| **Styling** | Tailwind CSS & PostCSS | `3.4.17` / `8.4.49` |
-| **Primitives** | Radix UI (Slot, Select, Dropdown, Avatar) | Exact pinned |
-| **Icons** | Lucide React | `1.16.0` |
-| **Database & Auth** | Supabase JS & Supabase SSR Client | `2.48.2` / `0.5.2` |
-| **Schema Validation** | Zod | `3.24.1` |
-| **Unit Testing** | Vitest & Testing Library | `3.0.0` / `16.2.0` |
-| **E2E Testing** | Playwright & Axe-Core Accessibility | `1.49.1` / `4.10.1` |
+| `public.questions_bank` | Relational bank of exam questions with LaTeX & mark schemes | Public/authenticated `SELECT`, authenticated `INSERT/UPDATE/DELETE` |
+| `public.institutes` | Coaching and institutional branding profiles | `owner_id = auth.uid()` for all CRUD operations |
+| `public.mock_papers` | Generated exam papers with questions snapshots & branding | `user_id = auth.uid()` for all CRUD operations |
+| `public.generated_pdfs` | PDF export records and file telemetry | `user_id = auth.uid()` for all CRUD operations |
+| `public.organizations` | Multi-tenant organization accounts | Membership verified via `public.memberships` |
+| `public.memberships` | User-to-organization RBAC mappings | Scoped to organization members or own record |
+| `public.profiles` | User profiles with super-admin flags | `id = auth.uid()` |
+| `public.projects` | Cloud project definitions and metadata | Scoped to organization members |
+| `public.orders` | Billing checkout orders and payment states | Scoped to organization members & platform admins |
+| `public.deployment_logs`| CI/CD deployment telemetry logs | Scoped to project organization members |
 
 ---
 
-## 🔐 Environment Variables
+## 🧪 Verification Record & Testing Suite
 
-Create a `.env.local` file in the root directory (this file is gitignored and must never be committed):
+### 1. Vitest Unit & Integration Tests (13 Suites, 64 Tests Passing)
+```bash
+npm run test
+```
+- `tests/unit/papercraft-generator.test.ts`: Validates difficulty distribution curves, topic checklists, target marks matching, and 1-click atomic swap state integrity.
+- `tests/unit/katex-math.test.ts`: Validates KaTeX equation formatting, fractions, display formulas, mixed text parsing, and error-tolerant fallbacks.
+- `tests/unit/papercraft-api.test.ts`: Validates `/api/questions`, `/api/questions/swap`, and `/api/mock-papers/generate` API routes.
+- `tests/unit/dashboard-components.test.tsx`: Validates `PaperStudio`, `SidebarNav`, and document export triggers.
+- `tests/unit/ai-client.test.ts`: Validates Gemini primary inference and OpenRouter fallback mechanism.
+- `tests/unit/document-export.test.ts`: Validates binary PDF and Word (.doc) generation without external dependencies.
+- `tests/unit/friendly-errors.test.ts`: Validates human-readable exception mapping across database, AI, and network failures.
 
+### 2. TypeScript Strict Mode & ESLint
+```bash
+npm run typecheck # tsc --noEmit (0 errors)
+npm run lint      # next lint (0 warnings, 0 errors)
+```
+
+### 3. Production Build
+```bash
+npm run build     # 22/22 static pages & server routes compiled successfully
+```
+
+---
+
+## 🚀 Getting Started
+
+### 1. Prerequisites
+- Node.js >= 20.x
+- npm >= 10.x
+
+### 2. Environment Configuration
+Create a `.env.local` file in the project root:
 ```env
 # Supabase Configuration
 NEXT_PUBLIC_SUPABASE_URL=https://<your-project-ref>.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=<your-anon-key>
 SUPABASE_PROJECT_REF=<your-project-ref>
 
-# AI Engine Credentials (Multi-Provider Fallback)
-GEMINI_API_KEY=<your-primary-gemini-api-key>
-OPENROUTER_API_KEY=<your-backup-openrouter-api-key>
+# AI Engine Credentials
+GEMINI_API_KEY=<your-google-gemini-api-key>
+OPENROUTER_API_KEY=<your-openrouter-api-key>
 
-# Admin Control Plane Secret
-ADMIN_SECRET_KEY=<your-secure-admin-secret-key>
+# Admin Control Plane
+ADMIN_SECRET_KEY=<your-secure-admin-secret>
 ```
 
----
+### 3. Database Migrations
+Migrations are managed in `supabase/migrations/`:
+- `20261030000001_plane_a_schema.sql`: Core multi-tenant organizations, profiles, projects, orders.
+- `20261030000002_papercraft_studio_schema.sql`: Question bank, institutes, mock papers, generated PDFs, with 15 seed Cambridge questions.
 
-## 🧪 Testing & Verification
+All migrations are verified against `scripts/hooks/sql-rls-circuit-breaker.mjs` before application.
 
-The project is protected by a continuous verification triad:
-
+### 4. Running Locally
 ```bash
-# 1. Static code analysis and linting (0 warnings enforced)
-npm run lint
+# Install exact pinned dependencies
+npm install
 
-# 2. TypeScript strict compilation check
-npm run typecheck
-
-# 3. Unit test suite (51 tests across scaffold, database, auth, AI fallback, admin, export, friendly-errors)
-npm run test
-
-# 4. End-to-end and WCAG AA accessibility tests across 3 viewports
-npm run test:e2e
-
-# 5. Production Next.js build
-npm run build
+# Start development server
+npm run dev
 ```
 
-### Test Coverage Highlights
-- **Unit Suite (51/51 Passing)**:
-  - Phase 1: Directory contract and specification enforcement
-  - Phase 2: Supabase schema and RLS policies verification
-  - Phase 3: Component rendering for landing page and dashboard (including PaperCraft Studio)
-  - Phase 4: Supabase OAuth redirects and checkout webhook verification
-  - Phase 5: Viewport contracts and token validation
-  - AI Engine: Primary success, failover on 429/timeout, forced provider routing, and combined failure handling
-  - Admin Suite: Session authentication, unauthorized rejection, and environment auditing
-  - Document Export Suite: PDF-1.4 binary structure verification, multi-page pagination, and Word XML formatting
-  - Friendly Error Handling: Accurate classification and user guidance for 429 rate limits, timeouts, safety blocks, 401 auth, 502 gateway disruptions, and export failures
-- **Playwright Suite (24/24 Passing)**:
-  - Tested across **Desktop (1440px)**, **Tablet (768px)**, and **Mobile (390px)**
-  - Automated **Axe-core WCAG AA** audit on Landing page, Auth gateway, and Customer Dashboard with **0 violations**
-  - E2E Admin flow testing login redirection, credential authentication, and tab switching
-
----
-
-## 📦 Project Structure
-
-```
-launchpad-plane-a/
-├── scripts/
-│   └── hooks/
-│       ├── verify-env.mjs               # Node >=20 and specification guard
-│       └── sql-rls-circuit-breaker.mjs  # Destructive SQL and RLS enforcer
-├── src/
-│   ├── app/
-│   │   ├── admin/
-│   │   │   ├── login/page.tsx           # Admin authentication gateway
-│   │   │   └── page.tsx                 # Full Admin Control Plane
-│   │   ├── api/
-│   │   │   ├── admin/
-│   │   │   │   ├── ai/health/route.ts   # Live AI probe endpoint
-│   │   │   │   ├── auth/route.ts        # Admin session login & logout
-│   │   │   │   ├── orders/route.ts      # Admin order management
-│   │   │   │   ├── system/route.ts      # Safe system diagnostics
-│   │   │   │   └── users/route.ts       # User & super admin management
-│   │   │   ├── ai/
-│   │   │   │   └── generate/route.ts    # Multi-provider generation endpoint
-│   │   │   ├── checkout/session/        # Checkout session handler
-│   │   │   └── webhooks/checkout/       # Payment webhook processor
-│   │   ├── auth/                        # Supabase auth gateway
-│   │   ├── dashboard/                   # Customer telemetry dashboard & PaperCraft Studio
-│   │   ├── error.tsx                    # Global Next.js error boundary
-│   │   ├── not-found.tsx                # Accessible 404 recovery page
-│   │   ├── layout.tsx                   # Root layout with globals & tokens
-│   │   └── page.tsx                     # Marketing landing page
-│   ├── components/
-│   │   ├── dashboard/                   # PaperStudio, TopStats, DataTable, OrderTracker
-│   │   ├── marketing/                   # Hero, Features, Pricing, Testimonials
-│   │   └── ui/                          # FriendlyAlert, Button primitives
-│   ├── lib/
-│   │   ├── ai/
-│   │   │   ├── client.ts                # Fallback engine (Gemini -> OpenRouter)
-│   │   │   └── types.ts                 # AI request/response types
-│   │   ├── errors/
-│   │   │   └── friendlyErrors.ts        # Error classifier & human guidance
-│   │   ├── export/
-│   │   │   └── documents.ts             # PDF-1.4 & MS Word export engine
-│   │   ├── supabase/                    # SSR client & server helpers
-│   │   └── utils.ts                     # Tailwind class merge helper
-│   ├── middleware.ts                    # Edge route protection & auth gating
-│   ├── styles/globals.css               # DESIGN.md compiled tokens
-│   └── types/database.types.ts          # Synchronized live Supabase types
-├── supabase/
-│   └── migrations/                      # Applied DDL migrations
-├── tests/
-│   ├── e2e/                             # Playwright & axe-core tests
-│   └── unit/                            # Vitest unit test suite (51 tests)
-├── DESIGN.md                            # Design token specification
-├── AGENTS.md                            # Engineering protocol rules
-└── package.json                         # Pinned exact dependencies
-```
-
----
-
-## 🚢 Deployment
-
-Deployed to **Vercel** with automatic preview deployments and production promotions. Environment variables are managed via Vercel Project Settings with encryption enabled for production, preview, and development targets.
+Visit [http://localhost:3000](http://localhost:3000) for the marketing launchpad and [http://localhost:3000/dashboard](http://localhost:3000/dashboard) for the PaperCraft AI Studio.
 
 ---
 
 ## 📄 License
-
-Proprietary and Confidential. Built with Google Antigravity.
+MIT License. Built for educators, examiners, and high-performance engineering teams.

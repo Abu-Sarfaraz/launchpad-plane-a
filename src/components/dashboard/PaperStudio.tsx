@@ -8,13 +8,25 @@ import {
   Check,
   Copy,
   GraduationCap,
+  Wand2,
+  Database,
+  Building2,
+  Bot,
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { FriendlyAlert } from '@/components/ui/FriendlyAlert';
 import { toFriendlyError, FriendlyError } from '@/lib/errors/friendlyErrors';
 import { downloadAsPdf, downloadAsDoc } from '@/lib/export/documents';
+import { AutoMockBuilder } from '@/components/papercraft/AutoMockBuilder';
+import { QuestionBankExplorer } from '@/components/papercraft/QuestionBankExplorer';
+import { BrandingSettingsModal } from '@/components/papercraft/BrandingSettingsModal';
+import { BrandingConfig } from '@/lib/papercraft/types';
+import { MathRenderer } from '@/components/ui/MathRenderer';
 
 export function PaperStudio() {
+  const [activeTab, setActiveTab] = useState<'auto-mock' | 'ai-synthesizer' | 'question-bank' | 'branding'>('auto-mock');
+
+  // AI Synthesizer State
   const [title, setTitle] = useState('IGCSE Physics: Mechanics and Thermodynamics Mock Examination');
   const [subject, setSubject] = useState('Physics');
   const [syllabus, setSyllabus] = useState('Cambridge CAIE IGCSE (0625)');
@@ -34,6 +46,14 @@ export function PaperStudio() {
   const [friendlyError, setFriendlyError] = useState<FriendlyError | null>(null);
   const [copied, setCopied] = useState(false);
   const [exportStatus, setExportStatus] = useState<string | null>(null);
+
+  // Institutional Branding State
+  const [branding, setBranding] = useState<BrandingConfig>({
+    instituteName: 'THE COACH',
+    subtitle: 'Tanas Sir - Senior Faculty',
+    enableCoverPage: true,
+    enableStudentHeader: true,
+  });
 
   const handleGenerate = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
@@ -102,6 +122,7 @@ Format the response cleanly with clear section headings:
       downloadAsPdf(title, generatedPaper, {
         subject,
         syllabus,
+        institution: branding.instituteName,
         date: new Date().toLocaleDateString(),
       });
       setExportStatus('PDF downloaded successfully!');
@@ -117,6 +138,7 @@ Format the response cleanly with clear section headings:
       downloadAsDoc(title, generatedPaper, {
         subject,
         syllabus,
+        institution: branding.instituteName,
         date: new Date().toLocaleDateString(),
       });
       setExportStatus('Microsoft Word (.doc) downloaded successfully!');
@@ -144,13 +166,13 @@ Format the response cleanly with clear section headings:
 
   return (
     <div className="bg-canvas-card border border-border-default/90 rounded-2xl p-6 md:p-8 backdrop-blur-xl shadow-xl space-y-6 mb-8">
-      {/* Header */}
+      {/* Studio Banner Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b border-border-default gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="w-2 h-2 rounded-full bg-accent-cyan animate-pulse" />
             <span className="text-xs font-mono text-accent-cyan uppercase tracking-wider">
-              PaperCraft AI Studio
+              PaperCraft AI Studio & Blueprint Hub
             </span>
           </div>
           <h2 className="text-xl md:text-2xl font-bold text-white tracking-tight flex items-center gap-2.5">
@@ -158,11 +180,11 @@ Format the response cleanly with clear section headings:
             Autonomous Exam & Academic Paper Creator
           </h2>
           <p className="text-xs text-fg-muted mt-1">
-            Synthesize official-grade examination papers with mark schemes in under 90 seconds.
+            Harmonized SaaS Platform combining Relational Question Bank, 1-Click Swapping, KaTeX math, and Multi-Provider AI Fallback Engine.
           </p>
         </div>
 
-        {/* Global Export Buttons if paper exists */}
+        {/* Global Export Buttons if AI paper exists */}
         {generatedPaper && (
           <div className="flex flex-wrap items-center gap-2.5">
             <Button
@@ -190,209 +212,285 @@ Format the response cleanly with clear section headings:
         )}
       </div>
 
-      {/* Generation Config Form */}
-      <form onSubmit={handleGenerate} className="space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div>
-            <label htmlFor="paper-subject" className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-1.5">
-              Subject
-            </label>
-            <select
-              id="paper-subject"
-              value={subject}
-              onChange={(e) => setSubject(e.target.value)}
-              className="w-full bg-canvas-subtle border border-border-default rounded-xl px-3.5 py-2.5 text-sm text-fg-primary focus:outline-none focus:ring-2 focus:ring-accent-cyan/50"
-            >
-              <option value="Physics">Physics</option>
-              <option value="Mathematics">Mathematics</option>
-              <option value="Chemistry">Chemistry</option>
-              <option value="Computer Science">Computer Science</option>
-              <option value="Biology">Biology</option>
-              <option value="Economics">Economics</option>
-            </select>
-          </div>
+      {/* Feature Mode Switcher Tabs */}
+      <div className="flex flex-wrap items-center gap-2 border-b border-border-default pb-3">
+        <button
+          type="button"
+          onClick={() => setActiveTab('auto-mock')}
+          className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-mono font-semibold transition-all ${
+            activeTab === 'auto-mock'
+              ? 'bg-accent-cyan/20 border border-accent-cyan text-accent-cyan shadow-glow-cyan'
+              : 'bg-canvas-subtle border border-border-default text-fg-secondary hover:text-white'
+          }`}
+        >
+          <Wand2 className="w-4 h-4" />
+          <span>Auto Mock Generator (1-Click Swap & KaTeX)</span>
+        </button>
 
-          <div>
-            <label htmlFor="paper-syllabus" className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-1.5">
-              Curriculum / Syllabus
-            </label>
-            <select
-              id="paper-syllabus"
-              value={syllabus}
-              onChange={(e) => setSyllabus(e.target.value)}
-              className="w-full bg-canvas-subtle border border-border-default rounded-xl px-3.5 py-2.5 text-sm text-fg-primary focus:outline-none focus:ring-2 focus:ring-accent-cyan/50"
-            >
-              <option value="Cambridge CAIE IGCSE (0625)">Cambridge CAIE IGCSE</option>
-              <option value="Cambridge CAIE International A-Level (9702)">Cambridge International A-Level</option>
-              <option value="Edexcel International GCSE (4PH1)">Edexcel International GCSE</option>
-              <option value="Standard Academic Mock (University/High School)">Standard Academic Mock</option>
-            </select>
-          </div>
+        <button
+          type="button"
+          onClick={() => setActiveTab('ai-synthesizer')}
+          className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-mono font-semibold transition-all ${
+            activeTab === 'ai-synthesizer'
+              ? 'bg-accent-purple/20 border border-accent-purple text-white shadow-glow'
+              : 'bg-canvas-subtle border border-border-default text-fg-secondary hover:text-white'
+          }`}
+        >
+          <Bot className="w-4 h-4" />
+          <span>Multi-Provider AI Synthesizer</span>
+        </button>
 
-          <div>
-            <label htmlFor="paper-difficulty" className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-1.5">
-              Difficulty Tier
-            </label>
-            <select
-              id="paper-difficulty"
-              value={difficulty}
-              onChange={(e) => setDifficulty(e.target.value)}
-              className="w-full bg-canvas-subtle border border-border-default rounded-xl px-3.5 py-2.5 text-sm text-fg-primary focus:outline-none focus:ring-2 focus:ring-accent-cyan/50"
-            >
-              <option value="Foundation Core (Grades 5-1)">Foundation Core (Grades 5-1)</option>
-              <option value="Extended Standard (Grades 9-4)">Extended Standard (Grades 9-4)</option>
-              <option value="A* Challenger (Advanced Problem Solving)">A* Challenger (Advanced Problem Solving)</option>
-            </select>
-          </div>
-        </div>
+        <button
+          type="button"
+          onClick={() => setActiveTab('question-bank')}
+          className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-mono font-semibold transition-all ${
+            activeTab === 'question-bank'
+              ? 'bg-accent-cyan/20 border border-accent-cyan text-accent-cyan shadow-glow-cyan'
+              : 'bg-canvas-subtle border border-border-default text-fg-secondary hover:text-white'
+          }`}
+        >
+          <Database className="w-4 h-4" />
+          <span>Question Bank Explorer</span>
+        </button>
 
-        <div>
-          <label htmlFor="paper-title" className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-1.5">
-            Paper Title
-          </label>
-          <input
-            id="paper-title"
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="w-full bg-canvas-subtle border border-border-default rounded-xl px-3.5 py-2.5 text-sm text-fg-primary focus:outline-none focus:ring-2 focus:ring-accent-cyan/50"
-            required
-          />
-        </div>
+        <button
+          type="button"
+          onClick={() => setActiveTab('branding')}
+          className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-mono font-semibold transition-all ${
+            activeTab === 'branding'
+              ? 'bg-accent-purple/20 border border-accent-purple text-white shadow-glow'
+              : 'bg-canvas-subtle border border-border-default text-fg-secondary hover:text-white'
+          }`}
+        >
+          <Building2 className="w-4 h-4" />
+          <span>Branding & Layout Settings</span>
+        </button>
+      </div>
 
-        <div>
-          <label htmlFor="paper-prompt" className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-1.5">
-            Specific Topic Instructions & Mark Scheme Requirements
-          </label>
-          <textarea
-            id="paper-prompt"
-            rows={3}
-            value={prompt}
-            onChange={(e) => setPrompt(e.target.value)}
-            className="w-full bg-canvas-subtle border border-border-default rounded-xl p-3 text-sm text-fg-primary focus:outline-none focus:ring-2 focus:ring-accent-cyan/50 font-mono"
-            required
-          />
-        </div>
-
-        <div className="flex justify-end">
-          <Button
-            type="submit"
-            variant="primary"
-            disabled={generating}
-            className="flex items-center gap-2 px-6 py-3 font-semibold"
-          >
-            <Sparkles className="w-4 h-4 text-accent-cyan" />
-            <span>{generating ? 'Synthesizing Examination Paper...' : 'Generate Paper with Multi-Provider AI'}</span>
-          </Button>
-        </div>
-      </form>
-
-      {/* Friendly Error Guidance Alert */}
-      {friendlyError && (
-        <FriendlyAlert
-          error={friendlyError}
-          onRetry={() => handleGenerate()}
-          onDismiss={() => setFriendlyError(null)}
-          isRetrying={generating}
+      {/* TAB 1: Auto Mock Generator */}
+      {activeTab === 'auto-mock' && (
+        <AutoMockBuilder
+          initialBranding={branding}
+          onOpenBranding={() => setActiveTab('branding')}
         />
       )}
 
-      {/* Export Feedback Toast */}
-      {exportStatus && (
-        <div
-          role="status"
-          className="p-3.5 rounded-xl bg-success/15 border border-success/30 flex items-center gap-2.5 text-xs text-success animate-fadeIn"
-        >
-          <Check className="w-4 h-4 flex-shrink-0" />
-          <span>{exportStatus}</span>
-        </div>
-      )}
+      {/* TAB 2: Multi-Provider AI Synthesizer */}
+      <div className={activeTab === 'ai-synthesizer' ? 'space-y-6' : 'hidden'}>
+        <form onSubmit={handleGenerate} className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label htmlFor="paper-subject" className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-1.5">
+                Subject
+              </label>
+              <select
+                id="paper-subject"
+                value={subject}
+                onChange={(e) => setSubject(e.target.value)}
+                className="w-full bg-canvas-subtle border border-border-default rounded-xl px-3.5 py-2.5 text-sm text-fg-primary focus:outline-none focus:ring-2 focus:ring-accent-cyan/50"
+              >
+                <option value="Physics">Physics</option>
+                <option value="Mathematics">Mathematics</option>
+                <option value="Chemistry">Chemistry</option>
+                <option value="Computer Science">Computer Science</option>
+                <option value="Biology">Biology</option>
+                <option value="Economics">Economics</option>
+              </select>
+            </div>
 
-      {/* Generated Paper Output Viewport */}
-      {generatedPaper && (
-        <div className="mt-8 pt-6 border-t border-border-default/80 space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between bg-canvas-subtle p-4 rounded-xl border border-border-default gap-3">
-            <div className="flex items-center gap-3">
-              <span className="w-2.5 h-2.5 rounded-full bg-success" />
-              <div>
-                <span className="text-xs font-bold text-white">Paper Generated Successfully</span>
-                <span className="text-[11px] text-fg-muted ml-2 font-mono">
-                  via {generationMeta?.provider.toUpperCase()} ({generationMeta?.latencyMs}ms)
-                </span>
+            <div>
+              <label htmlFor="paper-syllabus" className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-1.5">
+                Curriculum / Syllabus
+              </label>
+              <select
+                id="paper-syllabus"
+                value={syllabus}
+                onChange={(e) => setSyllabus(e.target.value)}
+                className="w-full bg-canvas-subtle border border-border-default rounded-xl px-3.5 py-2.5 text-sm text-fg-primary focus:outline-none focus:ring-2 focus:ring-accent-cyan/50"
+              >
+                <option value="Cambridge CAIE IGCSE (0625)">Cambridge CAIE IGCSE</option>
+                <option value="Cambridge CAIE International A-Level (9702)">Cambridge International A-Level</option>
+                <option value="Edexcel International GCSE (4PH1)">Edexcel International GCSE</option>
+                <option value="Standard Academic Mock (University/High School)">Standard Academic Mock</option>
+              </select>
+            </div>
+
+            <div>
+              <label htmlFor="paper-difficulty" className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-1.5">
+                Difficulty Tier
+              </label>
+              <select
+                id="paper-difficulty"
+                value={difficulty}
+                onChange={(e) => setDifficulty(e.target.value)}
+                className="w-full bg-canvas-subtle border border-border-default rounded-xl px-3.5 py-2.5 text-sm text-fg-primary focus:outline-none focus:ring-2 focus:ring-accent-cyan/50"
+              >
+                <option value="Foundation Core (Grades 5-1)">Foundation Core (Grades 5-1)</option>
+                <option value="Extended Standard (Grades 9-4)">Extended Standard (Grades 9-4)</option>
+                <option value="A* Challenger (Advanced Problem Solving)">A* Challenger (Advanced Problem Solving)</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label htmlFor="paper-title" className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-1.5">
+              Paper Title
+            </label>
+            <input
+              id="paper-title"
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="w-full bg-canvas-subtle border border-border-default rounded-xl px-3.5 py-2.5 text-sm text-fg-primary focus:outline-none focus:ring-2 focus:ring-accent-cyan/50"
+              required
+            />
+          </div>
+
+          <div>
+            <label htmlFor="paper-prompt" className="block text-xs font-semibold text-fg-secondary uppercase tracking-wider mb-1.5">
+              Specific Topic Instructions & Mark Scheme Requirements
+            </label>
+            <textarea
+              id="paper-prompt"
+              rows={3}
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
+              className="w-full bg-canvas-subtle border border-border-default rounded-xl p-3 text-sm text-fg-primary focus:outline-none focus:ring-2 focus:ring-accent-cyan/50 font-mono"
+              required
+            />
+          </div>
+
+          <div className="flex justify-end">
+            <Button
+              type="submit"
+              variant="primary"
+              disabled={generating}
+              className="flex items-center gap-2 px-6 py-3 font-semibold"
+            >
+              <Sparkles className="w-4 h-4 text-accent-cyan" />
+              <span>{generating ? 'Synthesizing Examination Paper...' : 'Generate Paper with Multi-Provider AI'}</span>
+            </Button>
+          </div>
+        </form>
+
+        {/* Friendly Error Guidance Alert */}
+        {friendlyError && (
+          <FriendlyAlert
+            error={friendlyError}
+            onRetry={() => handleGenerate()}
+            onDismiss={() => setFriendlyError(null)}
+            isRetrying={generating}
+          />
+        )}
+
+        {/* Export Feedback Toast */}
+        {exportStatus && (
+          <div
+            role="status"
+            className="p-3.5 rounded-xl bg-status-success/15 border border-status-success/30 flex items-center gap-2.5 text-xs text-status-success animate-fadeIn"
+          >
+            <Check className="w-4 h-4 flex-shrink-0" />
+            <span>{exportStatus}</span>
+          </div>
+        )}
+
+        {/* Generated Paper Output Viewport */}
+        {generatedPaper && (
+          <div className="mt-8 pt-6 border-t border-border-default/80 space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between bg-canvas-subtle p-4 rounded-xl border border-border-default gap-3">
+              <div className="flex items-center gap-3">
+                <span className="w-2.5 h-2.5 rounded-full bg-status-success" />
+                <div>
+                  <span className="text-xs font-bold text-white">Paper Generated Successfully</span>
+                  <span className="text-[11px] text-fg-muted ml-2 font-mono">
+                    via {generationMeta?.provider.toUpperCase()} ({generationMeta?.latencyMs}ms)
+                  </span>
+                </div>
+              </div>
+
+              {/* Crucial Download Action Buttons */}
+              <div className="flex items-center gap-2">
+                <Button
+                  type="button"
+                  variant="cyan"
+                  size="sm"
+                  onClick={handleDownloadPdf}
+                  className="flex items-center gap-1.5 font-bold"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  <span>Download as PDF</span>
+                </Button>
+
+                <Button
+                  type="button"
+                  variant="glass"
+                  size="sm"
+                  onClick={handleDownloadDoc}
+                  className="flex items-center gap-1.5 text-accent-cyan border-accent-cyan/40 hover:bg-accent-cyan/15 font-bold"
+                >
+                  <FileText className="w-3.5 h-3.5" />
+                  <span>Download as DOC</span>
+                </Button>
+
+                <button
+                  type="button"
+                  onClick={handleCopy}
+                  aria-label="Copy Paper Content"
+                  className="p-2 rounded-lg border border-border-default hover:bg-canvas text-fg-secondary hover:text-white transition-colors"
+                  title="Copy Paper Markdown"
+                >
+                  {copied ? <Check className="w-4 h-4 text-status-success" /> : <Copy className="w-4 h-4" />}
+                </button>
               </div>
             </div>
 
-            {/* Crucial Download Action Buttons */}
-            <div className="flex items-center gap-2">
-              <Button
-                type="button"
-                variant="cyan"
-                size="sm"
-                onClick={handleDownloadPdf}
-                className="flex items-center gap-1.5 font-bold"
-              >
-                <Download className="w-3.5 h-3.5" />
-                <span>Download as PDF</span>
-              </Button>
+            {/* Paper Content Preview Card with KaTeX rendering support */}
+            <div className="p-6 md:p-8 rounded-xl bg-slate-900/90 border border-border-default/80 font-serif text-slate-100 text-sm leading-relaxed whitespace-pre-wrap max-h-[500px] overflow-y-auto shadow-inner">
+              <MathRenderer content={generatedPaper} as="div" />
+            </div>
 
-              <Button
-                type="button"
-                variant="glass"
-                size="sm"
-                onClick={handleDownloadDoc}
-                className="flex items-center gap-1.5 text-accent-cyan border-accent-cyan/40 hover:bg-accent-cyan/15 font-bold"
-              >
-                <FileText className="w-3.5 h-3.5" />
-                <span>Download as DOC</span>
-              </Button>
+            {/* Bottom Duplicate Download Trigger Bar */}
+            <div className="flex items-center justify-between pt-2">
+              <span className="text-xs text-fg-muted">
+                Ready for high-resolution distribution, printable classroom handouts, and LMS integration.
+              </span>
+              <div className="flex items-center gap-2">
+                <Button
+                  type="button"
+                  variant="cyan"
+                  size="sm"
+                  onClick={handleDownloadPdf}
+                  className="flex items-center gap-1.5 font-bold"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  <span>Download as PDF</span>
+                </Button>
 
-              <button
-                type="button"
-                onClick={handleCopy}
-                aria-label="Copy Paper Content"
-                className="p-2 rounded-lg border border-border-default hover:bg-canvas text-fg-secondary hover:text-white transition-colors"
-                title="Copy Paper Markdown"
-              >
-                {copied ? <Check className="w-4 h-4 text-success" /> : <Copy className="w-4 h-4" />}
-              </button>
+                <Button
+                  type="button"
+                  variant="glass"
+                  size="sm"
+                  onClick={handleDownloadDoc}
+                  className="flex items-center gap-1.5 text-accent-cyan border-accent-cyan/40 font-bold"
+                >
+                  <FileText className="w-3.5 h-3.5" />
+                  <span>Download as DOC</span>
+                </Button>
+              </div>
             </div>
           </div>
+        )}
+      </div>
 
-          {/* Paper Content Preview Card */}
-          <div className="p-6 md:p-8 rounded-xl bg-slate-900/90 border border-border-default/80 font-serif text-slate-100 text-sm leading-relaxed whitespace-pre-wrap max-h-[500px] overflow-y-auto shadow-inner">
-            {generatedPaper}
-          </div>
+      {/* TAB 3: Relational Question Bank Explorer */}
+      {activeTab === 'question-bank' && <QuestionBankExplorer />}
 
-          {/* Bottom Duplicate Download Trigger Bar */}
-          <div className="flex items-center justify-between pt-2">
-            <span className="text-xs text-fg-muted">
-              Ready for high-resolution distribution, printable classroom handouts, and LMS integration.
-            </span>
-            <div className="flex items-center gap-2">
-              <Button
-                type="button"
-                variant="cyan"
-                size="sm"
-                onClick={handleDownloadPdf}
-                className="flex items-center gap-1.5 font-bold"
-              >
-                <Download className="w-3.5 h-3.5" />
-                <span>Download as PDF</span>
-              </Button>
-
-              <Button
-                type="button"
-                variant="glass"
-                size="sm"
-                onClick={handleDownloadDoc}
-                className="flex items-center gap-1.5 text-accent-cyan border-accent-cyan/40 font-bold"
-              >
-                <FileText className="w-3.5 h-3.5" />
-                <span>Download as DOC</span>
-              </Button>
-            </div>
-          </div>
-        </div>
+      {/* TAB 4: Institutional Branding Settings */}
+      {activeTab === 'branding' && (
+        <BrandingSettingsModal
+          currentBranding={branding}
+          onSave={(updated) => setBranding(updated)}
+        />
       )}
     </div>
   );
