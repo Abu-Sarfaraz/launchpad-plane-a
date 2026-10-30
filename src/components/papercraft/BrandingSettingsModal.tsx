@@ -23,6 +23,9 @@ export function BrandingSettingsModal({
     currentBranding.subtitle || 'Tanas Sir - Senior Faculty'
   );
   const [logoUrl, setLogoUrl] = useState(currentBranding.logoUrl || '');
+  const [watermarkText, setWatermarkText] = useState(
+    currentBranding.watermarkText || currentBranding.instituteName || 'THE COACH'
+  );
   const [enableCoverPage, setEnableCoverPage] = useState(
     currentBranding.enableCoverPage !== false
   );
@@ -41,6 +44,7 @@ export function BrandingSettingsModal({
       instituteName,
       subtitle,
       logoUrl: logoUrl.trim() || undefined,
+      watermarkText: watermarkText.trim() || undefined,
       enableCoverPage,
       enableStudentHeader,
     };
@@ -127,6 +131,19 @@ export function BrandingSettingsModal({
             onChange={(e) => setLogoUrl(e.target.value)}
             className="w-full bg-canvas border border-border-default rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-accent-purple"
             placeholder="https://example.com/logo.png"
+          />
+        </div>
+
+        <div>
+          <label className="block text-xs font-mono text-fg-muted mb-1 uppercase tracking-wider">
+            Watermark Text (Printed diagonally across exam sheets)
+          </label>
+          <input
+            type="text"
+            value={watermarkText}
+            onChange={(e) => setWatermarkText(e.target.value)}
+            className="w-full bg-canvas border border-border-default rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-accent-purple"
+            placeholder="e.g. THE COACH - CONFIDENTIAL"
           />
         </div>
 

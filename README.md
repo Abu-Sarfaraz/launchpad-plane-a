@@ -8,7 +8,7 @@
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4.17-06B6D4?style=for-the-badge&logo=tailwindcss)](https://tailwindcss.com/)
 [![KaTeX](https://img.shields.io/badge/KaTeX-0.16.11-329894?style=for-the-badge&logo=latex)](https://katex.org/)
 [![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL_RLS-3ECF8E?style=for-the-badge&logo=supabase)](https://supabase.com/)
-[![Vitest](https://img.shields.io/badge/Vitest-64_Passing-6E9F18?style=for-the-badge&logo=vitest)](https://vitest.dev/)
+[![Vitest](https://img.shields.io/badge/Vitest-68_Passing-6E9F18?style=for-the-badge&logo=vitest)](https://vitest.dev/)
 [![Playwright](https://img.shields.io/badge/Playwright-24_Passing_WCAG_AA-2EAD33?style=for-the-badge&logo=playwright)](https://playwright.dev/)
 
 ---
@@ -31,8 +31,8 @@ Prompt2Paper unites two world-class system architectures into a single, cohesive
      - *Standard CAIE Curve* (30% Easy / 50% Medium / 20% Hard)
      - *Foundation Drill* (80% Easy / 20% Medium / 0% Hard)
      - *A\* Challenger* (15% Easy / 45% Medium / 40% Hard)
-   - **1-Click Atomic Question Swapping**: Instant question replacement that synchronizes question prompts, allocated marks, and Section B official mark schemes atomically.
-   - **Institutional Branding & Layout Engine**: Coaching institution title (e.g., `THE COACH`), faculty subtitle (e.g., `Tanas Sir`), emblem logo, candidate details header, and official Cambridge cover page instructions.
+   - **1-Click Atomic Question Swapping**: Instant question replacement with circular candidate rotation that prevents 2-element starvation ping-pong and synchronizes question prompts, allocated marks, and Section B official mark schemes atomically.
+   - **Institutional Branding & Layout Engine**: Coaching institution title (e.g., `THE COACH`), faculty subtitle (e.g., `Tanas Sir`), emblem logo, diagonal watermark, candidate details header, and official Cambridge cover page instructions with mark-proportional student answer spaces.
    - **Cloud Persistence Tables** (`mock_papers`, `institutes`, `generated_pdfs`) protected with user-scoped Supabase RLS.
 
 ```
@@ -73,23 +73,26 @@ The engine intelligently synthesizes balanced examination papers matching exact 
 - **A\* Challenger**: $15\%$ Easy, $45\%$ Medium, $40\%$ Hard (multi-step proofs, non-routine problems).
 - **Topic Checklist**: Select from Number & Arithmetic, Algebra & Graphs, Geometry & Mensuration, Statistics & Probability, and Trigonometry & Vectors.
 
-### 2. 1-Click Atomic Question Swap Engine
+### 2. 1-Click Atomic Question Swap Engine (Candidate Rotation)
 - Solves the critical **Mark Scheme Desync Defect** by maintaining an immutable unified paper state node.
 - Swapping a question replaces both the question prompt and its corresponding official marking guidelines simultaneously without altering overall allocated marks.
+- Implements candidate circular rotation to ensure all available matching questions can be browsed without starvation or getting trapped in 2-element loops.
 
 ### 3. KaTeX Mathematical Typography
 - LaTeX formulas rendered via KaTeX (`0.16.11`) both client-side and server-side.
 - Clean formatting for fractions ($\frac{a}{b}$), radicals ($\sqrt{x^2+y^2}$), quadratic formula ($x = \frac{-b \pm \sqrt{b^2-4ac}}{2a}$), simultaneous equation systems, and vector matrices ($\vec{v} = \begin{pmatrix} 6 \\ -8 \end{pmatrix}$).
 - Embedded KaTeX CSS ensures zero missing font glyphs or layout shifts.
+- Delimited text parsing cleanly distinguishes regular English prose from mathematical expressions.
 
-### 4. Institutional Branding & Cambridge Cover Page
+### 4. Institutional Branding, Watermark & Cambridge Cover Page
 - Custom coaching watermark & header (e.g. *THE COACH*, *Tanas Sir*).
+- Dynamic mark-proportional student answer writing spaces preventing cramped calculations.
 - Candidate details block (Candidate Name, Date, Centre Number, Candidate Number, Score box).
 - Official Cambridge Instructions to Candidates: Calculator rules, accuracy guidelines, answer space demarcations.
 - Saved directly into Supabase `public.institutes` table with user-scoped RLS.
 
 ### 5. Multi-Page Vector PDF Print & Word (.doc) Export
-- **Print Sheet View**: Uses print media rules (`@media print`, `page-break-inside: avoid`, `print-avoid-break`) ensuring questions do not awkwardly slice across page boundaries.
+- **Print Sheet View**: Uses print media rules (`@media print`, `page-break-inside: avoid`, `print-avoid-break`, `@page { margin: 12mm 15mm; size: A4; }`) ensuring questions do not awkwardly slice across page boundaries and dashboard chrome is fully isolated.
 - **Direct PDF Vector Generation**: Instant client-side download as PDF or via browser print dialog.
 - **Microsoft Word (.doc) Generation**: Complete `.doc` export with native Word XML tags and styled headers.
 
@@ -100,7 +103,7 @@ The engine intelligently synthesizes balanced examination papers matching exact 
 
 ### 7. Supabase Multi-Tenant Database & Strict RLS
 Every table is locked down with PostgreSQL Row Level Security:
-- `questions_bank`: Public/authenticated read, authenticated admin write.
+- `questions_bank`: Public/authenticated read, admin/owner-only `INSERT/UPDATE/DELETE` verified via `public.memberships`.
 - `institutes`: `owner_id = auth.uid()`
 - `mock_papers`: `user_id = auth.uid()`
 - `generated_pdfs`: `user_id = auth.uid()`
@@ -112,7 +115,7 @@ Every table is locked down with PostgreSQL Row Level Security:
 
 | Table Name | Description | Row Level Security (RLS) Policy |
 | :--- | :--- | :--- |
-| `public.questions_bank` | Relational bank of exam questions with LaTeX & mark schemes | Public/authenticated `SELECT`, authenticated `INSERT/UPDATE/DELETE` |
+| `public.questions_bank` | Relational bank of exam questions with LaTeX & mark schemes | Public/authenticated `SELECT`, org admin/owner `INSERT/UPDATE/DELETE` |
 | `public.institutes` | Coaching and institutional branding profiles | `owner_id = auth.uid()` for all CRUD operations |
 | `public.mock_papers` | Generated exam papers with questions snapshots & branding | `user_id = auth.uid()` for all CRUD operations |
 | `public.generated_pdfs` | PDF export records and file telemetry | `user_id = auth.uid()` for all CRUD operations |
@@ -127,12 +130,12 @@ Every table is locked down with PostgreSQL Row Level Security:
 
 ## 🧪 Verification Record & Testing Suite
 
-### 1. Vitest Unit & Integration Tests (13 Suites, 64 Tests Passing)
+### 1. Vitest Unit & Integration Tests (13 Suites, 68 Tests Passing)
 ```bash
 npm run test
 ```
-- `tests/unit/papercraft-generator.test.ts`: Validates difficulty distribution curves, topic checklists, target marks matching, and 1-click atomic swap state integrity.
-- `tests/unit/katex-math.test.ts`: Validates KaTeX equation formatting, fractions, display formulas, mixed text parsing, and error-tolerant fallbacks.
+- `tests/unit/papercraft-generator.test.ts`: Validates difficulty distribution curves, topic checklists, target marks matching, candidate rotation, and 1-click atomic swap state integrity.
+- `tests/unit/katex-math.test.ts`: Validates KaTeX equation formatting, fractions, display formulas, un-delimited environments, mixed text parsing, and error-tolerant fallbacks.
 - `tests/unit/papercraft-api.test.ts`: Validates `/api/questions`, `/api/questions/swap`, and `/api/mock-papers/generate` API routes.
 - `tests/unit/dashboard-components.test.tsx`: Validates `PaperStudio`, `SidebarNav`, and document export triggers.
 - `tests/unit/ai-client.test.ts`: Validates Gemini primary inference and OpenRouter fallback mechanism.

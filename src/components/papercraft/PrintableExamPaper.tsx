@@ -14,14 +14,38 @@ export function PrintableExamPaper({
   showMarkScheme = true,
 }: PrintableExamPaperProps) {
   const { branding_config, questions_snapshot, title, target_marks, duration_minutes } = paper;
+  const watermark = branding_config.watermarkText || branding_config.instituteName;
 
   return (
-    <div className="bg-white text-slate-900 font-serif p-6 md:p-10 rounded-xl shadow-2xl border border-slate-200 print:p-0 print:border-none print:shadow-none text-sm max-w-4xl mx-auto">
+    <div
+      id="printable-exam-paper"
+      className="relative bg-white text-slate-900 font-serif p-6 md:p-10 rounded-xl shadow-2xl border border-slate-200 print:p-0 print:border-none print:shadow-none print:m-0 text-sm max-w-4xl mx-auto overflow-hidden"
+    >
+      {/* Background Watermark in Print & Preview */}
+      {watermark && (
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-[0.035] print:opacity-[0.05] select-none text-slate-900 font-extrabold text-6xl md:text-8xl uppercase rotate-[-30deg] z-0 overflow-hidden"
+        >
+          {watermark}
+        </div>
+      )}
+
       {/* Official Cambridge Cover Page */}
       {branding_config.enableCoverPage && (
-        <div className="border-4 border-slate-900 p-8 rounded-lg mb-8 text-center space-y-6 print-page-break">
-          {/* Institution Header */}
+        <div className="relative z-10 border-4 border-slate-900 p-8 rounded-lg mb-8 text-center space-y-6 print-page-break">
+          {/* Institution Header with Optional Logo */}
           <div className="border-b-2 border-slate-900 pb-4">
+            {branding_config.logoUrl && (
+              <div className="mb-3 flex justify-center">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={branding_config.logoUrl}
+                  alt={branding_config.instituteName || 'Institution Logo'}
+                  className="h-16 max-w-xs object-contain"
+                />
+              </div>
+            )}
             <h1 className="text-2xl font-bold tracking-wider uppercase font-sans">
               {branding_config.instituteName || 'THE COACH'}
             </h1>
@@ -43,7 +67,7 @@ export function PrintableExamPaper({
 
           {/* Student Fill-in Header */}
           {branding_config.enableStudentHeader && (
-            <div className="border-2 border-slate-800 p-4 rounded text-left space-y-3 font-sans text-xs bg-slate-50">
+            <div className="border-2 border-slate-800 p-4 rounded text-left space-y-3 font-sans text-xs bg-slate-50 print:bg-white">
               <div className="grid grid-cols-2 gap-4">
                 <div className="border-b border-dotted border-slate-700 pb-1">
                   <span className="font-semibold">Candidate Name: </span>
@@ -81,7 +105,7 @@ export function PrintableExamPaper({
       )}
 
       {/* Main Examination Questions: Section A */}
-      <div className="space-y-8">
+      <div className="relative z-10 space-y-8">
         <div className="border-b-2 border-slate-900 pb-2 mb-4 flex justify-between items-end">
           <div>
             <h2 className="text-lg font-bold uppercase font-sans tracking-tight">Section A: Examination Questions</h2>
@@ -92,36 +116,42 @@ export function PrintableExamPaper({
           </span>
         </div>
 
-        {questions_snapshot.map((q: Question, idx: number) => (
-          <div
-            key={q.id || idx}
-            className="print-avoid-break pb-6 border-b border-slate-200 last:border-b-0 space-y-3"
-          >
-            <div className="flex items-start justify-between gap-4">
-              <div className="flex items-start gap-2 text-base leading-relaxed">
-                <span className="font-bold font-sans text-slate-900">{idx + 1}.</span>
-                <div className="text-slate-900 font-serif">
-                  <MathRenderer content={q.latex_prompt} as="div" />
+        {questions_snapshot.map((q: Question, idx: number) => {
+          const answerAreaHeight = Math.max(65, q.marks * 26);
+          return (
+            <div
+              key={q.id || idx}
+              className="print-avoid-break pb-6 border-b border-slate-200 last:border-b-0 space-y-3"
+            >
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex items-start gap-2 text-base leading-relaxed">
+                  <span className="font-bold font-sans text-slate-900">{idx + 1}.</span>
+                  <div className="text-slate-900 font-serif">
+                    <MathRenderer content={q.latex_prompt} as="div" />
+                  </div>
+                </div>
+                <span className="font-bold font-sans text-slate-800 text-xs shrink-0 whitespace-nowrap">
+                  [{q.marks} {q.marks === 1 ? 'mark' : 'marks'}]
+                </span>
+              </div>
+
+              {/* Mark-proportional Answer Writing Space */}
+              <div
+                style={{ minHeight: `${answerAreaHeight}px` }}
+                className="mt-4 pt-2 border-t border-dashed border-slate-300 flex flex-col justify-end"
+              >
+                <div className="text-right text-xs font-mono text-slate-500">
+                  Answer: ..............................................................
                 </div>
               </div>
-              <span className="font-bold font-sans text-slate-800 text-xs shrink-0 whitespace-nowrap">
-                [{q.marks} {q.marks === 1 ? 'mark' : 'marks'}]
-              </span>
             </div>
-
-            {/* Answer Writing Space */}
-            <div className="mt-4 pt-2 border-t border-dashed border-slate-300 min-h-[70px] flex flex-col justify-end">
-              <div className="text-right text-xs font-mono text-slate-500">
-                Answer: ..............................................................
-              </div>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Section B: Official Mark Scheme & Answers */}
       {showMarkScheme && (
-        <div className="print-page-break mt-12 pt-8 border-t-4 border-slate-900 space-y-6">
+        <div className="relative z-10 print-page-break mt-12 pt-8 border-t-4 border-slate-900 space-y-6">
           <div className="border-b-2 border-slate-900 pb-2">
             <h2 className="text-lg font-bold uppercase font-sans tracking-tight text-slate-900">
               Section B: Official Mark Scheme & Marking Criteria
@@ -135,7 +165,7 @@ export function PrintableExamPaper({
             {questions_snapshot.map((q: Question, idx: number) => (
               <div
                 key={`ms-${q.id || idx}`}
-                className="print-avoid-break p-3.5 rounded bg-slate-50 border border-slate-200 text-xs space-y-1.5"
+                className="print-avoid-break p-3.5 rounded bg-slate-50 print:bg-white border border-slate-200 text-xs space-y-1.5"
               >
                 <div className="flex justify-between items-center font-sans font-semibold text-slate-800">
                   <span>Question {idx + 1} ({q.code})</span>

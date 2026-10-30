@@ -80,6 +80,11 @@ body {
   body {
     background-color: #ffffff !important;
     color: #000000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  header, nav, footer, aside, .no-print, [data-no-print="true"] {
+    display: none !important;
   }
   .print-page-break {
     page-break-after: always;
@@ -88,5 +93,9 @@ body {
   .print-avoid-break {
     page-break-inside: avoid;
     break-inside: avoid;
+  }
+  @page {
+    margin: 12mm 15mm 12mm 15mm;
+    size: A4 portrait;
   }
 }

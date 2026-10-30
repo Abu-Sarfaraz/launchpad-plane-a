@@ -94,6 +94,106 @@ describe('PaperCraft Auto Mock Generator & 1-Click Swap Engine', () => {
     expect(newTotalMarks).toBe(initialTotalMarks);
   });
 
+  it('cycles through all available candidates in a pool rather than ping-ponging', () => {
+    const customPool = [
+      {
+        id: 'pool-1',
+        code: 'TEST_Q1',
+        curriculum: 'CIE_O_LEVEL',
+        subject_code: '4024',
+        subject_name: 'Mathematics D',
+        topic_category: 'Number & Arithmetic',
+        difficulty_level: 'EASY' as const,
+        marks: 2,
+        latex_prompt: '$1+1$',
+        mark_scheme_latex: '$2$',
+      },
+      {
+        id: 'pool-2',
+        code: 'TEST_Q2',
+        curriculum: 'CIE_O_LEVEL',
+        subject_code: '4024',
+        subject_name: 'Mathematics D',
+        topic_category: 'Number & Arithmetic',
+        difficulty_level: 'EASY' as const,
+        marks: 2,
+        latex_prompt: '$2+2$',
+        mark_scheme_latex: '$4$',
+      },
+      {
+        id: 'pool-3',
+        code: 'TEST_Q3',
+        curriculum: 'CIE_O_LEVEL',
+        subject_code: '4024',
+        subject_name: 'Mathematics D',
+        topic_category: 'Number & Arithmetic',
+        difficulty_level: 'EASY' as const,
+        marks: 2,
+        latex_prompt: '$3+3$',
+        mark_scheme_latex: '$6$',
+      },
+    ];
+
+    const initialPaper = {
+      id: 'paper-rot',
+      title: 'Rotation Test',
+      target_marks: 2,
+      duration_minutes: 15,
+      difficulty_profile: 'CAIE_STANDARD' as const,
+      question_ids: ['pool-1'],
+      questions_snapshot: [customPool[0]],
+      branding_config: baseOptions.branding,
+    };
+
+    // Swap 1: pool-1 -> pool-2
+    const swap1 = swapQuestion('pool-1', initialPaper, customPool);
+    expect(swap1?.newQuestion.id).toBe('pool-2');
+
+    // Swap 2: pool-2 -> pool-3 (previously failed by ping-ponging back to pool-1!)
+    const swap2 = swapQuestion('pool-2', swap1!.updatedPaper, customPool);
+    expect(swap2?.newQuestion.id).toBe('pool-3');
+
+    // Swap 3: pool-3 -> pool-1 (wraps around circularly)
+    const swap3 = swapQuestion('pool-3', swap2!.updatedPaper, customPool);
+    expect(swap3?.newQuestion.id).toBe('pool-1');
+  });
+
+  it('generates a clean alternative without repeated [Alternative] prefixes when no candidates remain', () => {
+    const singlePool = [
+      {
+        id: 'only-q',
+        code: 'ONLY_Q',
+        curriculum: 'CIE_O_LEVEL',
+        subject_code: '4024',
+        subject_name: 'Mathematics D',
+        topic_category: 'Number & Arithmetic',
+        difficulty_level: 'EASY' as const,
+        marks: 5,
+        latex_prompt: 'Solve: $x = 5$',
+        mark_scheme_latex: '$x = 5$',
+      },
+    ];
+
+    const paperWithOnlyQ = {
+      id: 'paper-single',
+      title: 'Single Test',
+      target_marks: 5,
+      duration_minutes: 15,
+      difficulty_profile: 'CAIE_STANDARD' as const,
+      question_ids: ['only-q'],
+      questions_snapshot: [singlePool[0]],
+      branding_config: baseOptions.branding,
+    };
+
+    const firstSwap = swapQuestion('only-q', paperWithOnlyQ, singlePool);
+    expect(firstSwap?.newQuestion.latex_prompt).toBe('[Alternative] Solve: $x = 5$');
+
+    // On second swap when pool has no alternative questions available
+    const secondSwap = swapQuestion(firstSwap!.newQuestion.id, firstSwap!.updatedPaper, []);
+    expect(secondSwap?.newQuestion.latex_prompt).toBe('[Alternative] Solve: $x = 5$');
+    expect(secondSwap?.newQuestion.latex_prompt).not.toContain('[Alternative] [Alternative]');
+  });
+
   it('returns null if question ID to swap does not exist in paper', () => {
     const { paper } = generateMockPaper(baseOptions, DEFAULT_FALLBACK_QUESTIONS);
     const result = swapQuestion('non-existent-id', paper, DEFAULT_FALLBACK_QUESTIONS);

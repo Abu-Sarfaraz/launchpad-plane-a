@@ -33,4 +33,22 @@ describe('KaTeX Math Equation Engine', () => {
       expect(typeof result).toBe('string');
     }).not.toThrow();
   });
+
+  it('renders un-delimited LaTeX environments such as cases and matrices', () => {
+    const rawCases = 'Solve the system:\\begin{cases} 3x + 2y = 12 \\\\ x - y = 1 \\end{cases}';
+    const html = renderMixedLatexToHtml(rawCases);
+
+    expect(html).toContain('katex-display');
+    expect(html).toContain('Solve the system:');
+  });
+
+  it('preserves English words as plain text when math is delimited with $', () => {
+    const mixed = 'Calculate $\\frac{3.4 \\times 10^7}{8.5 \\times 10^{-3}}$, giving your answer in standard form $A \\times 10^n$ where $1 \\le A < 10$.';
+    const html = renderMixedLatexToHtml(mixed);
+
+    expect(html).toContain('Calculate');
+    expect(html).toContain('giving your answer in standard form');
+    expect(html).toContain('katex');
+    expect(html).toContain('mfrac');
+  });
 });

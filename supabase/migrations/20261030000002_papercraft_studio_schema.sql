@@ -27,18 +27,38 @@ CREATE POLICY "Allow public read access on questions_bank"
   ON public.questions_bank FOR SELECT
   USING (true);
 
-CREATE POLICY "Allow authenticated users to insert questions"
+CREATE POLICY "Allow admins to insert questions"
   ON public.questions_bank FOR INSERT
-  WITH CHECK (auth.uid() IS NOT NULL);
+  WITH CHECK (
+    EXISTS (
+      SELECT 1 FROM public.memberships
+      WHERE user_id = auth.uid() AND role IN ('owner', 'admin')
+    )
+  );
 
-CREATE POLICY "Allow authenticated users to update questions"
+CREATE POLICY "Allow admins to update questions"
   ON public.questions_bank FOR UPDATE
-  USING (auth.uid() IS NOT NULL)
-  WITH CHECK (auth.uid() IS NOT NULL);
+  USING (
+    EXISTS (
+      SELECT 1 FROM public.memberships
+      WHERE user_id = auth.uid() AND role IN ('owner', 'admin')
+    )
+  )
+  WITH CHECK (
+    EXISTS (
+      SELECT 1 FROM public.memberships
+      WHERE user_id = auth.uid() AND role IN ('owner', 'admin')
+    )
+  );
 
-CREATE POLICY "Allow authenticated users to delete questions"
+CREATE POLICY "Allow admins to delete questions"
   ON public.questions_bank FOR DELETE
-  USING (auth.uid() IS NOT NULL);
+  USING (
+    EXISTS (
+      SELECT 1 FROM public.memberships
+      WHERE user_id = auth.uid() AND role IN ('owner', 'admin')
+    )
+  );
 
 
 -- 2. institutes Table

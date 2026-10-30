@@ -253,7 +253,7 @@ export function AutoMockBuilder({
       {/* Configuration & Controls Panel */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left: Generator Controls */}
-        <div className="bg-canvas-subtle p-5 rounded-2xl border border-border-default space-y-4">
+        <div className="bg-canvas-subtle p-5 rounded-2xl border border-border-default space-y-4 print:hidden">
           <div className="flex items-center justify-between border-b border-border-default pb-3">
             <h3 className="text-sm font-bold text-white flex items-center gap-2">
               <Sliders className="w-4 h-4 text-accent-cyan" />
@@ -389,9 +389,9 @@ export function AutoMockBuilder({
         </div>
 
         {/* Right: Live Interactive Mock Paper Viewport */}
-        <div className="lg:col-span-2 space-y-4">
+        <div className="lg:col-span-2 space-y-4 print:w-full print:col-span-3 print:m-0 print:p-0">
           {/* Top Paper Header Bar */}
-          <div className="bg-canvas-subtle p-4 rounded-2xl border border-border-default flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="bg-canvas-subtle p-4 rounded-2xl border border-border-default flex flex-col sm:flex-row sm:items-center justify-between gap-3 print:hidden">
             <div>
               <div className="flex items-center gap-2">
                 <span className="text-xs font-mono text-accent-cyan font-bold uppercase">
@@ -456,7 +456,7 @@ export function AutoMockBuilder({
 
           {/* Feedback Toast */}
           {saveStatus && (
-            <div className="p-3 rounded-xl bg-status-success/15 border border-status-success/30 text-status-success text-xs font-mono flex items-center gap-2 animate-fadeIn">
+            <div className="p-3 rounded-xl bg-status-success/15 border border-status-success/30 text-status-success text-xs font-mono flex items-center gap-2 animate-fadeIn print:hidden">
               <Check className="w-4 h-4 flex-shrink-0" />
               <span>{saveStatus}</span>
             </div>
@@ -464,12 +464,19 @@ export function AutoMockBuilder({
 
           {/* Conditional View: Printable Sheet or Interactive Swap Editor */}
           {viewMode === 'printable' && currentPaper ? (
-            <div className="max-h-[600px] overflow-y-auto rounded-2xl border border-border-default p-2 bg-slate-950">
+            <div className="max-h-[600px] overflow-y-auto rounded-2xl border border-border-default p-2 bg-slate-950 print:max-h-none print:overflow-visible print:border-none print:p-0 print:bg-white print:block">
               <PrintableExamPaper paper={currentPaper} />
             </div>
           ) : (
-            /* Interactive Swap Questions List */
-            <div className="space-y-3 max-h-[600px] overflow-y-auto pr-1">
+            <>
+              {/* Fallback print target so window.print() prints exam paper even when teacher is in editor mode */}
+              {currentPaper && (
+                <div className="hidden print:block print:w-full print:m-0 print:p-0">
+                  <PrintableExamPaper paper={currentPaper} />
+                </div>
+              )}
+              {/* Interactive Swap Questions List (Hidden during print) */}
+              <div className="space-y-3 max-h-[600px] overflow-y-auto pr-1 print:hidden">
               {currentPaper?.questions_snapshot.map((q: Question, idx: number) => {
                 const isSwapping = swappingId === q.id;
                 const isExpanded = !!expandedMarkSchemes[q.id];
@@ -555,6 +562,7 @@ export function AutoMockBuilder({
                 );
               })}
             </div>
+            </>
           )}
         </div>
       </div>
