@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="bn" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PaperCraft AI Studio - Video Deconstruction & Antigravity MCP Blueprint</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- FontAwesome CDN (for icons, NO SVG) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f3ff',
+                            100: '#e1e7fe',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#1e1b4b',
+                            950: '#0f172a',
+                        },
+                        accent: {
+                            purple: '#8b5cf6',
+                            cyan: '#06b6d4',
+                            emerald: '#10b981',
+                            rose: '#f43f5e',
+                            amber: '#f59e0b'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Hind Siliguri"', '"Plus Jakarta Sans"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Embedded CSS for Chart Containers and Scrollbars */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 360px;
+            }
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-brand-500 selection:text-white min-h-screen flex flex-col">
+
+<!-- Chosen Palette: Slate Midnight & Violet Pulse (Primary: #0F172A, Elevated: #1E293B, Accent: #8B5CF6, Cyber Cyan: #06B6D4, Light Text: #F8FAFC) -->
+<!-- Application Structure Plan: Designed as a 6-phase interactive software engineering dashboard. Phase 1 provides visual video deconstruction and feature extraction. Phase 2 presents the full-stack architecture and interactive database schema explorer. Phase 3 analyzes 7 critical engineering flaws in naive implementations. Phase 4 delivers hardened solutions (KaTeX math, PDF page breaks, RLS security). Phase 5 serves as the Antigravity Command Center with copyable MCP JSON configs, DESIGN.md, and 5-phase execution prompts. Phase 6 offers a live interactive Auto Mock Generator simulator. -->
+<!-- Visualization & Content Choices: 
+     - Difficulty Distribution -> Chart.js Donut Chart -> Interactive profile selector -> Visualizes CAIE vs Foundation vs A* Challenger weightage -> Canvas/Chart.js
+     - Database Schema -> Interactive Table Inspector -> Click table node to view columns & RLS -> Clarifies relational architecture -> HTML/CSS Grid + JS
+     - Gap vs Fix -> Accordion Comparison Grid -> Expandable rows -> Highlights security & layout vulnerabilities -> Tailwind CSS + JS
+     - Antigravity Prompts -> Copyable Code Panels -> One-click copy buttons -> Streamlines Antigravity CLI execution -> HTML + Vanilla JS
+     - Confirmation: NO SVG graphics used, NO Mermaid JS used.
+-->
+<!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <!-- Top Navigation Header -->
+    <header class="sticky top-0 z-50 glass-panel border-b border-slate-800 bg-slate-950/80 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-accent-purple flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-brand-500/30">
+                    <i class="fa-solid fa-scroll"></i>
+                </div>
+                <div>
+                    <span class="font-bold text-lg tracking-tight bg-gradient-to-r from-white via-slate-200 to-brand-500 bg-clip-text text-transparent">PaperCraft AI</span>
+                    <span class="text-xs text-slate-400 block font-mono">Architectural Blueprint & MCP Hub</span>
+                </div>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="hidden lg:flex items-center space-x-1">
+                <button onclick="switchTab('video-analysis')" id="nav-video-analysis" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium transition-all text-brand-500 bg-brand-500/10 border border-brand-500/30">
+                    <i class="fa-solid fa-video mr-1.5"></i>ভিডিও এনালাইসিস
+                </button>
+                <button onclick="switchTab('architecture')" id="nav-architecture" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800/60 transition-all">
+                    <i class="fa-solid fa-sitemap mr-1.5"></i>আর্কিটেকচার
+                </button>
+                <button onclick="switchTab('gap-analysis')" id="nav-gap-analysis" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800/60 transition-all">
+                    <i class="fa-solid fa-bug mr-1.5"></i>ত্রুটি ও গ্যাপ এনালাইসিস
+                </button>
+                <button onclick="switchTab('solutions')" id="nav-solutions" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800/60 transition-all">
+                    <i class="fa-solid fa-shield-halved mr-1.5"></i>উন্নত সমাধান
+                </button>
+                <button onclick="switchTab('antigravity')" id="nav-antigravity" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800/60 transition-all">
+                    <i class="fa-solid fa-rocket mr-1.5"></i>Antigravity Prompts
+                </button>
+                <button onclick="switchTab('simulator')" id="nav-simulator" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium text-emerald-400 hover:bg-emerald-500/10 transition-all border border-emerald-500/30">
+                    <i class="fa-solid fa-bolt mr-1.5"></i>লাইভ জেনারেটর
+                </button>
+            </nav>
+
+            <!-- Status Pill -->
+            <div class="flex items-center space-x-2">
+                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-mono font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse mr-2"></span>Antigravity MCP Ready
+                </span>
+            </div>
+        </div>
+
+        <!-- Mobile Nav Bar -->
+        <div class="lg:hidden flex overflow-x-auto px-4 py-2 space-x-2 border-t border-slate-800 bg-slate-900/90 text-xs font-mono">
+            <button onclick="switchTab('video-analysis')" class="whitespace-nowrap px-3 py-1.5 rounded-md bg-brand-600 text-white">ভিডিও এনালাইসিস</button>
+            <button onclick="switchTab('architecture')" class="whitespace-nowrap px-3 py-1.5 rounded-md bg-slate-800 text-slate-300">আর্কিটেকচার</button>
+            <button onclick="switchTab('gap-analysis')" class="whitespace-nowrap px-3 py-1.5 rounded-md bg-slate-800 text-slate-300">গ্যাপ এনালাইসিস</button>
+            <button onclick="switchTab('solutions')" class="whitespace-nowrap px-3 py-1.5 rounded-md bg-slate-800 text-slate-300">সমাধান</button>
+            <button onclick="switchTab('antigravity')" class="whitespace-nowrap px-3 py-1.5 rounded-md bg-slate-800 text-slate-300">Antigravity</button>
+            <button onclick="switchTab('simulator')" class="whitespace-nowrap px-3 py-1.5 rounded-md bg-emerald-900/50 text-emerald-300">সিমুলেটর</button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+        <!-- Banner Introduction -->
+        <section class="glass-panel rounded-2xl p-6 sm:p-8 relative overflow-hidden border border-slate-800">
+            <div class="absolute -right-16 -top-16 w-64 h-64 bg-brand-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute right-32 -bottom-20 w-80 h-80 bg-accent-purple/10 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <div class="relative z-10 max-w-4xl space-y-4">
+                <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-slate-800/80 border border-slate-700 text-xs font-mono text-slate-300">
+                    <i class="fa-solid fa-code-compare text-brand-500"></i>
+                    <span>Source: WhatsApp Video Deconstruction + Production Engineering Blueprint</span>
+                </div>
+                <h1 class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
+                    PaperCraft AI: ভিডিও থেকে প্রোডাকশন-রেডি সফটওয়্যার আর্কিটেকচার
+                </h1>
+                <p class="text-slate-300 text-base leading-relaxed">
+                    এই প্ল্যাটফর্মটি <span class="text-brand-400 font-semibold">PaperCraft Worksheet Studio</span> (papercraft.click) এর মূল ভিডিও বিশ্লেষণ করে তৈরি একটি পূর্ণাঙ্গ সফটওয়্যার ইঞ্জিনিয়ারিং প্ল্যান। ইংরেজি মিডিয়াম (Cambridge & Edexcel) শিক্ষকদের জন্য মাত্র ৯০ সেকেন্ডে ব্র্যান্ডেড মক পেপার ও মার্ক স্কিম জেনারেট করার সুবিধা সম্বলিত এই সিস্টেমটি Google Antigravity এবং MCP (Stitch, Supabase, GitHub, Vercel) সার্ভারের মাধ্যমে বাস্তবায়নের উপযোগী করে সাজানো হয়েছে।
+                </p>
+                <div class="pt-2 flex flex-wrap gap-3 text-xs font-mono text-slate-400">
+                    <span class="bg-slate-900/80 px-3 py-1.5 rounded-lg border border-slate-800"><i class="fa-solid fa-check text-emerald-400 mr-1.5"></i>Full Video Analysis</span>
+                    <span class="bg-slate-900/80 px-3 py-1.5 rounded-lg border border-slate-800"><i class="fa-solid fa-check text-emerald-400 mr-1.5"></i>PostgreSQL RLS Schema</span>
+                    <span class="bg-slate-900/80 px-3 py-1.5 rounded-lg border border-slate-800"><i class="fa-solid fa-check text-emerald-400 mr-1.5"></i>7 Critical Gap Remedies</span>
+                    <span class="bg-slate-900/80 px-3 py-1.5 rounded-lg border border-slate-800"><i class="fa-solid fa-check text-emerald-400 mr-1.5"></i>5-Phase Antigravity Prompts</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 1: VIDEO ANALYSIS & DECONSTRUCTION -->
+        <section id="tab-video-analysis" class="tab-content space-y-6">
+            <div class="border-b border-slate-800 pb-4">
+                <h2 class="text-2xl font-bold text-white flex items-center">
+                    <i class="fa-solid fa-video text-brand-500 mr-3"></i>ভিডিও ডিঅঙ্কন ও সিস্টেম ফিচারের বিশ্লেষণ (Video Deconstruction)
+                </h2>
+                <p class="text-slate-400 text-sm mt-1">
+                    ভিডিওর অডিও ট্রানস্ক্রিপ্ট, ডিসপ্লে ফ্রেম এবং ইউজার ইন্টারফেস অ্যাকশন থেকে এক্সট্রাক্ট করা মূল কাজের তালিকা ও লজিক্যাল ফ্লো।
+                </p>
+            </div>
+
+            <!-- Audio & Narrative Summary Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Target Audience -->
+                <div class="glass-card rounded-xl p-5 border border-slate-800">
+                    <div class="w-10 h-10 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center text-lg mb-3">
+                        <i class="fa-solid fa-chalkboard-user"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white">টার্গেট ইউজার ও প্রবলেম স্টেটমেন্ট</h3>
+                    <p class="text-xs text-slate-300 mt-2 leading-relaxed">
+                        ইংরেজি মিডিয়ামের (Cambridge O/A-Level & Edexcel) শিক্ষক ও কোচিং সেন্টারের মালিকগণ। প্রশ্নপত্র তৈরি ও টাইপ করার জন্য প্রতি মাসে টিচিং অ্যাসিস্ট্যান্ট (TA) রাখার খরচ ও সময় সাশ্রয় করা এর মূল উদ্দেশ্য।
+                    </p>
+                </div>
+
+                <!-- Core Value Proposition -->
+                <div class="glass-card rounded-xl p-5 border border-slate-800">
+                    <div class="w-10 h-10 rounded-lg bg-purple-500/10 border border-purple-500/20 text-purple-400 flex items-center justify-center text-lg mb-3">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white">৯০-সেকেন্ডের প্রতিশ্রুতি</h3>
+                    <p class="text-xs text-slate-300 mt-2 leading-relaxed">
+                        মাত্র ৯০ সেকেন্ডের মধ্যে কোচিংয়ের নাম, লোগো, ব্যাচ নেম এবং ক্যামব্রিজ/এডেলসেলের অফিসিয়াল মার্কস স্কিমসহ অটোমেটিক প্রিমিয়াম প্রিন্ট-রেডি মক পেপার (PDF) তৈরি করা।
+                    </p>
+                </div>
+
+                <!-- Product Identity -->
+                <div class="glass-card rounded-xl p-5 border border-slate-800">
+                    <div class="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center text-lg mb-3">
+                        <i class="fa-solid fa-globe"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white">PaperCraft Studio Platform</h3>
+                    <p class="text-xs text-slate-300 mt-2 leading-relaxed">
+                        ওয়েবসাইট: <span class="font-mono text-emerald-400">papercraft.click</span>। একটি অল-ইন-ওয়ান ওয়ার্কশীট স্টুডিও যা চ্যাপ্টার ফিল্টারিং, মার্কস ব্যালান্সিং, কাস্টম সোয়াপিং এবং ইনস্ট্যান্ট ব্র্যান্ডিং সাপোর্ট করে।
+                    </p>
+                </div>
+            </div>
+
+            <!-- Identified Video Features Breakdown -->
+            <div class="glass-panel rounded-2xl p-6 border border-slate-800">
+                <h3 class="text-xl font-bold text-white mb-4 flex items-center">
+                    <i class="fa-solid fa-list-check text-brand-500 mr-2"></i>ভিডিওতে প্রদর্শিত মূল ৭টি ফাংশনাল ফিচার
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+
+                    <!-- Feature 1 -->
+                    <div class="bg-slate-900/90 rounded-xl p-4 border border-slate-800 space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-mono text-brand-400">01. Auto Mock Generator</span>
+                            <span class="px-2 py-0.5 rounded text-[10px] bg-brand-500/20 text-brand-300">Modal Flow</span>
+                        </div>
+                        <h4 class="font-semibold text-sm text-white">স্মার্ট মক পেপার উইজার্ড</h4>
+                        <p class="text-xs text-slate-400">
+                            সাবজেক্ট (Mathematics D 4024), টার্গেট মার্কস (25, 50, 100 বা Custom e.g. 30 Marks), এবং এক্সাম টাইম (e.g. 1 hour 15 mins) সেট করার সুবিধা।
+                        </p>
+                    </div>
+
+                    <!-- Feature 2 -->
+                    <div class="bg-slate-900/90 rounded-xl p-4 border border-slate-800 space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-mono text-accent-cyan">02. Cognitive Difficulty Curve</span>
+                            <span class="px-2 py-0.5 rounded text-[10px] bg-accent-cyan/20 text-accent-cyan">Algorithm</span>
+                        </div>
+                        <h4 class="font-semibold text-sm text-white">ডিফিকাল্টি ও পেসিং প্রোফাইল</h4>
+                        <p class="text-xs text-slate-400">
+                            ৩টি মোড: Standard CAIE Curve (30% Easy, 50% Medium, 20% Hard), Foundation Drill (80% Easy, 20% Medium), এবং A* Challenger (15% Easy, 45% Medium, 40% Hard)।
+                        </p>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div class="bg-slate-900/90 rounded-xl p-4 border border-slate-800 space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-mono text-accent-purple">03. Topic Weightage & Balance</span>
+                            <span class="px-2 py-0.5 rounded text-[10px] bg-accent-purple/20 text-accent-purple">Smart Picker</span>
+                        </div>
+                        <h4 class="font-semibold text-sm text-white">চ্যাপ্টার ও মার্কস ব্যালান্সিং</h4>
+                        <p class="text-xs text-slate-400">
+                            ৮টি চ্যাপ্টারের সিলেক্টর (Number, Algebra, Geometry, Mensuration, Trigonometry, Vectors, Probability) থেকে মার্কস এডজাস্ট করে ১-ক্লিকে প্রশ্ন সাজানো।
+                        </p>
+                    </div>
+
+                    <!-- Feature 4 -->
+                    <div class="bg-slate-900/90 rounded-xl p-4 border border-slate-800 space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-mono text-emerald-400">04. 1-Click Question Swap</span>
+                            <span class="px-2 py-0.5 rounded text-[10px] bg-emerald-500/20 text-emerald-300">Interactive</span>
+                        </div>
+                        <h4 class="font-semibold text-sm text-white">ইনস্ট্যান্ট প্রশ্ন সোয়াপার</h4>
+                        <p class="text-xs text-slate-400">
+                            পছন্দ না হওয়া প্রশ্নকে একই টপিক ও ডিফিকাল্টির বিকল্প প্রশ্ন দিয়ে মাত্র ১-ক্লিকে অদলবদল এবং ড্র্যাগ-এন্ড-ড্রপ রি-অর্ডার করার সুবিধা।
+                        </p>
+                    </div>
+
+                    <!-- Feature 5 -->
+                    <div class="bg-slate-900/90 rounded-xl p-4 border border-slate-800 space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-mono text-amber-400">05. Manual Question Filter</span>
+                            <span class="px-2 py-0.5 rounded text-[10px] bg-amber-500/20 text-amber-300">Question Bank</span>
+                        </div>
+                        <h4 class="font-semibold text-sm text-white">কাস্টম কোয়েশ্চেন সার্চ ফিল্টার</h4>
+                        <p class="text-xs text-slate-400">
+                            Curriculum, Subject, Paper, Year Range (2018-2026), Season (Summer/Winter), Zone, Topic এবং Keyword দিয়ে প্রশ্ন খুজে কাস্টম পেপার তৈরি।
+                        </p>
+                    </div>
+
+                    <!-- Feature 6 -->
+                    <div class="bg-slate-900/90 rounded-xl p-4 border border-slate-800 space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-mono text-rose-400">06. Institutional Branding</span>
+                            <span class="px-2 py-0.5 rounded text-[10px] bg-rose-500/20 text-rose-300">Custom Layout</span>
+                        </div>
+                        <h4 class="font-semibold text-sm text-white">ব্র্যান্ডিং ও লোগো সেটিংস</h4>
+                        <p class="text-xs text-slate-400">
+                            কোচিং নাম, সাবটাইটেল/টিচার নেম, লোগো আপলোড, স্টুডেন্ট ডিটেইলস হেডার বক্স, কমপ্যাক্ট মোড এবং অফিশিয়াল ক্যামব্রিজ কভার পেজ টগল।
+                        </p>
+                    </div>
+
+                    <!-- Feature 7 -->
+                    <div class="bg-slate-900/90 rounded-xl p-4 border border-slate-800 space-y-2 md:col-span-2 lg:col-span-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-mono text-cyan-400">07. Dynamic PDF & Official Mark Scheme Engine</span>
+                            <span class="px-2 py-0.5 rounded text-[10px] bg-cyan-500/20 text-cyan-300">Export System</span>
+                        </div>
+                        <h4 class="font-semibold text-sm text-white">মার্ক স্কিমসহ হাই-রেজুলেশন প্রিন্ট রেডি PDF</h4>
+                        <p class="text-xs text-slate-400">
+                            এক ক্লিকে ফুল PDF প্রিভিউ ও ডাউনলোড। স্বয়ংক্রিয়ভাবে প্রশ্নপত্রের শেষে অফিসিয়াল মার্কিং গাইডলাইন যুক্ত হয়ে পেপার তৈরি হয়।
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Difficulty Curve Chart Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
+                <div class="glass-panel rounded-2xl p-6 border border-slate-800">
+                    <h3 class="text-lg font-bold text-white mb-2">ডিফিকাল্টি ডিস্ট্রিবিউশন প্রোফাইল</h3>
+                    <p class="text-xs text-slate-400 mb-4">
+                        ভিডিওতে প্রদর্শিত ৩টি স্মার্ট অ্যালগরিদমিক কার্ভের মার্কস অনুপাত।
+                    </p>
+                    <div class="chart-container">
+                        <canvas id="difficultyChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="glass-panel rounded-2xl p-6 border border-slate-800 space-y-4">
+                    <h3 class="text-lg font-bold text-white">অ্যালগরিদম লজিক বিস্তারিত</h3>
+                    <div class="space-y-3 text-xs">
+                        <div class="p-3 rounded-lg bg-slate-900 border border-slate-800">
+                            <div class="font-semibold text-brand-400 mb-1"><i class="fa-solid fa-sliders mr-2"></i>Standard CAIE Curve (Standard)</div>
+                            <p class="text-slate-300">৩০% সহজ, ৫০% মাঝারি এবং ২০% কঠিন প্রশ্ন নির্বাচন করে ক্যামব্রিজ বোর্ড পরীক্ষার ভারসাম্য রক্ষা করে।</p>
+                        </div>
+                        <div class="p-3 rounded-lg bg-slate-900 border border-slate-800">
+                            <div class="font-semibold text-emerald-400 mb-1"><i class="fa-solid fa-graduation-cap mr-2"></i>Foundation Drill (Remedial)</div>
+                            <p class="text-slate-300">৮০% সহজ এবং ২০% মাঝারি প্রশ্ন নির্বাচন করে দুর্বল শিক্ষার্থীদের বেসিক শক্ত করার জন্য উপযোগী।</p>
+                        </div>
+                        <div class="p-3 rounded-lg bg-slate-900 border border-slate-800">
+                            <div class="font-semibold text-purple-400 mb-1"><i class="fa-solid fa-trophy mr-2"></i>A* Challenger (Top Tier)</div>
+                            <p class="text-slate-300">১৫% সহজ, ৪৫% মাঝারি এবং ৪০% মাল্টি-স্টেপ ট্রিকি কঠিন প্রশ্ন দিয়ে A* প্রত্যাশী শিক্ষার্থীদের জন্য চ্যালেঞ্জিং পেপার বানায়।</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: END-TO-END SOFTWARE ARCHITECTURE -->
+        <section id="tab-architecture" class="tab-content hidden space-y-6">
+            <div class="border-b border-slate-800 pb-4">
+                <h2 class="text-2xl font-bold text-white flex items-center">
+                    <i class="fa-solid fa-sitemap text-brand-500 mr-3"></i>এন্ড-টু-এন্ড সফটওয়্যার আর্কিটেকচার (Full-Stack Blueprint)
+                </h2>
+                <p class="text-slate-400 text-sm mt-1">
+                    Google Antigravity, Supabase PostgreSQL, Next.js 15, Vercel এবং GitHub MCP সার্ভার সমন্বিত আধুনিক টেক স্ট্যাক ডিজাইন।
+                </p>
+            </div>
+
+            <!-- Dual Plane Architecture & Stack Matrix -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Stack Spec Card -->
+                <div class="glass-panel rounded-2xl p-6 border border-slate-800 space-y-4 lg:col-span-1">
+                    <h3 class="text-lg font-bold text-white flex items-center">
+                        <i class="fa-solid fa-layer-group text-accent-cyan mr-2"></i>প্রোডাকশন টেকনোলজি স্ট্যাক
+                    </h3>
+                    <ul class="space-y-3 text-xs">
+                        <li class="flex items-start">
+                            <span class="w-24 text-slate-400 font-mono">Frontend:</span>
+                            <span class="text-slate-200 font-semibold">Next.js 15 (App Router), React 19, Tailwind CSS v4, Radix UI</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="w-24 text-slate-400 font-mono">Database:</span>
+                            <span class="text-slate-200 font-semibold">Supabase Managed PostgreSQL, PostgREST, Row-Level Security</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="w-24 text-slate-400 font-mono">Math Engine:</span>
+                            <span class="text-slate-200 font-semibold">KaTeX (SSR Math Rendering) + Canvas/SVG Rasterizer</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="w-24 text-slate-400 font-mono">PDF Export:</span>
+                            <span class="text-slate-200 font-semibold">@react-pdf/renderer + Serverless Puppeteer PDF Compiler</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="w-24 text-slate-400 font-mono">Orchestration:</span>
+                            <span class="text-slate-200 font-semibold">Google Antigravity IDE/CLI + MCP Servers (Stitch, Supabase, Vercel)</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Database Interactive Inspector -->
+                <div class="glass-panel rounded-2xl p-6 border border-slate-800 lg:col-span-2 space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-bold text-white flex items-center">
+                            <i class="fa-solid fa-database text-accent-purple mr-2"></i>PostgreSQL স্কিমা ও RLS ইন্টারেক্টিভ এক্সপ্লোরার
+                        </h3>
+                        <span class="text-xs font-mono text-emerald-400"><i class="fa-solid fa-lock mr-1"></i>Strict RLS Enabled</span>
+                    </div>
+
+                    <!-- Table Selectors -->
+                    <div class="flex flex-wrap gap-2 text-xs font-mono">
+                        <button onclick="inspectTable('questions')" id="tbl-btn-questions" class="tbl-btn px-3 py-1.5 rounded-lg bg-brand-600 text-white">questions_bank</button>
+                        <button onclick="inspectTable('mock_papers')" id="tbl-btn-mock_papers" class="tbl-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400 hover:text-white">mock_papers</button>
+                        <button onclick="inspectTable('institutes')" id="tbl-btn-institutes" class="tbl-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400 hover:text-white">institutes</button>
+                        <button onclick="inspectTable('users')" id="tbl-btn-users" class="tbl-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400 hover:text-white">profiles</button>
+                    </div>
+
+                    <!-- Dynamic Table Details Display -->
+                    <div id="table-details-box" class="bg-slate-900 rounded-xl p-4 border border-slate-800 font-mono text-xs space-y-3">
+                        <!-- Loaded dynamically via JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Complete System Architecture Flow Diagram (HTML/CSS Nodes) -->
+            <div class="glass-panel rounded-2xl p-6 border border-slate-800 space-y-4">
+                <h3 class="text-lg font-bold text-white flex items-center">
+                    <i class="fa-solid fa-network-wired text-brand-400 mr-2"></i>এন্ড-টু-এন্ড ডেটা ও ডিকুয়েয়ারি ফ্লো আর্কিটেকচার
+                </h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-center text-xs">
+                    <div class="p-4 rounded-xl bg-slate-900 border border-brand-500/30 space-y-2">
+                        <div class="text-brand-400 font-bold"><i class="fa-solid fa-desktop text-base mb-1 block"></i>Client Layer</div>
+                        <p class="text-slate-300">Teacher UI / Mobile Web</p>
+                        <span class="inline-block px-2 py-0.5 rounded bg-brand-500/20 text-brand-300 text-[10px]">Next.js 15 SPA</span>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-slate-900 border border-purple-500/30 space-y-2">
+                        <div class="text-purple-400 font-bold"><i class="fa-solid fa-gears text-base mb-1 block"></i>API & Edge Functions</div>
+                        <p class="text-slate-300">Paper Generator Logic</p>
+                        <span class="inline-block px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 text-[10px]">Supabase Edge / Deno</span>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-slate-900 border border-emerald-500/30 space-y-2">
+                        <div class="text-emerald-400 font-bold"><i class="fa-solid fa-file-pdf text-base mb-1 block"></i>PDF Renderer Engine</div>
+                        <p class="text-slate-300">KaTeX + Puppeteer PDF</p>
+                        <span class="inline-block px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px]">300 DPI Vector PDF</span>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-slate-900 border border-cyan-500/30 space-y-2">
+                        <div class="text-cyan-400 font-bold"><i class="fa-solid fa-cloud-arrow-down text-base mb-1 block"></i>Storage & Edge CDN</div>
+                        <p class="text-slate-300">Supabase Storage</p>
+                        <span class="inline-block px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 text-[10px]">Signed Download URLs</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: GAP ANALYSIS & DEFICIENCIES -->
+        <section id="tab-gap-analysis" class="tab-content hidden space-y-6">
+            <div class="border-b border-slate-800 pb-4">
+                <h2 class="text-2xl font-bold text-white flex items-center">
+                    <i class="fa-solid fa-bug text-rose-500 mr-3"></i>ভিবে কোডিং ও প্রারম্ভিক ইমপ্লিমেন্টেশনের ৭টি মারাত্মক ত্রুটি (Gap Analysis)
+                </h2>
+                <p class="text-slate-400 text-sm mt-1">
+                    ভিডিওর ডেমো দেখে সরাসরি AI এজেন্টের মাধ্যমে কোড বানালে যে ৭টি টেকনিক্যাল ও সিকিউরিটি ঘাটতি তৈরি হয়।
+                </p>
+            </div>
+
+            <!-- Critical Gaps Accordion / Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <!-- Defect 1 -->
+                <div class="glass-card rounded-2xl p-5 border border-rose-500/30 space-y-3">
+                    <div class="flex justify-between items-start">
+                        <span class="text-xs font-mono px-2 py-1 bg-rose-500/20 text-rose-300 rounded">CRITICAL DEFECT #1</span>
+                        <span class="text-xs text-slate-400 font-mono">Math & Layout Rendering</span>
+                    </div>
+                    <h3 class="font-bold text-base text-white">গাণিতিক সিম্বল ও LaTeX ভগ্নাংশ ভেঙে যাওয়া (KaTeX Breakage)</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        ক্যামব্রিজ ম্যাথ পরীক্ষায় প্রচুর ভগ্নাংশ, স্কয়ার রুট ও ম্যাট্রিক্স চিহ্ন থাকে। সরাসরি সাধারণ HTML বা Canvas দিয়ে PDF বানালে প্রিন্টের সময় গাণিতিক ইকুয়েশন এবং ফ্র্যাকশন লাইন উধাও হয়ে যায়।
+                    </p>
+                </div>
+
+                <!-- Defect 2 -->
+                <div class="glass-card rounded-2xl p-5 border border-amber-500/30 space-y-3">
+                    <div class="flex justify-between items-start">
+                        <span class="text-xs font-mono px-2 py-1 bg-amber-500/20 text-amber-300 rounded">CRITICAL DEFECT #2</span>
+                        <span class="text-xs text-slate-400 font-mono">PDF Pagination Overflow</span>
+                    </div>
+                    <h3 class="font-bold text-base text-white">PDF পেজ ব্রেক এবং প্রশ্ন কেটে যাওয়া (Uncontrolled Overflow)</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        একটি ৪ নম্বরের প্রশ্নের অর্ধেক অংশ পেজ ১-এ এবং উত্তর লেখার ফাঁকা জায়গা পেজ ২-এ চলে যাওয়ার ঝুঁকি। সঠিক CSS `@media print` ও সাইজ হিসাব না থাকলে পেপার নষ্ট হয়।
+                    </p>
+                </div>
+
+                <!-- Defect 3 -->
+                <div class="glass-card rounded-2xl p-5 border border-rose-500/30 space-y-3">
+                    <div class="flex justify-between items-start">
+                        <span class="text-xs font-mono px-2 py-1 bg-rose-500/20 text-rose-300 rounded">CRITICAL DEFECT #3</span>
+                        <span class="text-xs text-slate-400 font-mono">Data Security & RLS</span>
+                    </div>
+                    <h3 class="font-bold text-base text-white">Row-Level Security (RLS) বিহীন ডেটাবেজ ও পাইরেসি</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        অটো-জেনারেটেড কোডে Supabase টেবিলে RLS অন না থাকলে যে কেউ API দিয়ে পুরো প্রশ্ন ব্যাংক, শিক্ষকদের কোচিং লোগো এবং জেনারেট করা পেপার চুরি করতে পারে।
+                    </p>
+                </div>
+
+                <!-- Defect 4 -->
+                <div class="glass-card rounded-2xl p-5 border border-amber-500/30 space-y-3">
+                    <div class="flex justify-between items-start">
+                        <span class="text-xs font-mono px-2 py-1 bg-amber-500/20 text-amber-300 rounded">CRITICAL DEFECT #4</span>
+                        <span class="text-xs text-slate-400 font-mono">Mark Scheme Desync</span>
+                    </div>
+                    <h3 class="font-bold text-base text-white">প্রশ্ন সোয়াপিংয়ের পর মার্ক স্কিম অসমঞ্জস্যতা (Desync Bug)</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        ১-ক্লিকে প্রশ্ন সোয়াপ করার সময় প্রশ্নপত্রের কন্টেন্ট পাল্টালেও শেষ পৃষ্ঠার Mark Scheme না বদলানোর মারাত্মক স্টেট ম্যানেজমেন্ট বাগ।
+                    </p>
+                </div>
+
+                <!-- Defect 5 -->
+                <div class="glass-card rounded-2xl p-5 border border-purple-500/30 space-y-3">
+                    <div class="flex justify-between items-start">
+                        <span class="text-xs font-mono px-2 py-1 bg-purple-500/20 text-purple-300 rounded">CRITICAL DEFECT #5</span>
+                        <span class="text-xs text-slate-400 font-mono">Geometry Image Blur</span>
+                    </div>
+                    <h3 class="font-bold text-base text-white">জ্যামিতি চিত্রের ঝাপসা প্রিন্ট (Low DPI Geometry Rasterization)</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        পাস্ট পেপারের ডায়াগ্রাম (Vectors, Trigonometry) লো-রেজুলেশন র্যাস্টার ফরম্যাটে থাকলে প্রিন্ট আউট নিলে পিক্সেল ফেটে অস্পষ্ট হয়ে যায়।
+                    </p>
+                </div>
+
+                <!-- Defect 6 -->
+                <div class="glass-card rounded-2xl p-5 border border-purple-500/30 space-y-3">
+                    <div class="flex justify-between items-start">
+                        <span class="text-xs font-mono px-2 py-1 bg-purple-500/20 text-purple-300 rounded">CRITICAL DEFECT #6</span>
+                        <span class="text-xs text-slate-400 font-mono">Context & Quota Exhaustion</span>
+                    </div>
+                    <h3 class="font-bold text-base text-white">Antigravity কোটা ও Stitch API এক্সহস্টন</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        ছোটখাটো স্টাইলিং পরিবর্তনের জন্য বারবার Stitch MCP দিয়ে নতুন ডিজাইন জেনারেট করলে প্রতি মাসের ৫০-টি Gemini Pro রিকোয়েস্ট কোটা ১ দিনেই শেষ হয়ে যায়।
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECTION 4: HARDENED SOLUTIONS & REMEDIATION -->
+        <section id="tab-solutions" class="tab-content hidden space-y-6">
+            <div class="border-b border-slate-800 pb-4">
+                <h2 class="text-2xl font-bold text-white flex items-center">
+                    <i class="fa-solid fa-shield-halved text-emerald-400 mr-3"></i>প্রি-ফ্লাইট টেকনিক্যাল সমাধান ও হার্ডেনিং (Hardened Remedies)
+                </h2>
+                <p class="text-slate-400 text-sm mt-1">
+                    সকল সনাক্তকৃত ত্রুটি দূর করে প্রোডাকশন-গ্রেড প্ল্যাটফর্ম বানানোর সুনির্দিষ্ট ইঞ্জিনিয়ারিং সমাধান।
+                </p>
+            </div>
+
+            <div class="space-y-6">
+
+                <!-- Solution 1: KaTeX + Vector PDF Engine -->
+                <div class="glass-panel rounded-2xl p-6 border border-slate-800 space-y-3">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-bold text-white flex items-center">
+                            <i class="fa-solid fa-square-root-variable text-brand-400 mr-2"></i>১. নিখুঁত গাণিতিক ইকুয়েশন ও KaTeX রেন্ডারিং ইঞ্জিন
+                        </h3>
+                        <span class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-300 text-xs font-mono">FIXED</span>
+                    </div>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        আমরা ক্লায়েন্ট ও সার্ভার উভয় স্থানেই <span class="text-brand-400 font-mono">KaTeX</span> ম্যাথ ইঞ্জিন ব্যবহার করব। প্রতিটি গণিত প্রশ্ন LaTeX ফরম্যাটে (e.g. <span class="font-mono text-purple-300">\frac{a}{b} \cdot \sqrt{x^2+y^2}</span>) ডেটাবেজে সংরক্ষিত থাকবে এবং PDF জেনারেট করার সময় ভেক্টরাইজড রেন্ডারিং নিশ্চিত করবে।
+                    </p>
+                    <div class="bg-slate-900 rounded-xl p-3 border border-slate-800 font-mono text-xs text-emerald-400">
+                        <code>// Solution: Server-side KaTeX rendering to high-DPI Canvas prior to Puppeteer PDF print<br>import katex from 'katex';<br>const htmlString = katex.renderToString(question.latex_prompt, { displayMode: true, output: 'mathml' });</code>
+                    </div>
+                </div>
+
+                <!-- Solution 2: Atomic State Management for Mark Schemes -->
+                <div class="glass-panel rounded-2xl p-6 border border-slate-800 space-y-3">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-bold text-white flex items-center">
+                            <i class="fa-solid fa-arrows-rotate text-purple-400 mr-2"></i>২. এটমিক প্রশ্ন সোয়াপিং ও মার্ক স্কিম সিঙ্ক
+                        </h3>
+                        <span class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-300 text-xs font-mono">FIXED</span>
+                    </div>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        প্রশ্ন সোয়াপ করার জন্য একটি Unified Immutable State Node ব্যবহার করা হবে। যখন কোন প্রশ্ন অদলবদল করা হয়, তখন একই সাথে তার <span class="font-mono text-purple-400">question_id</span>, <span class="font-mono text-purple-400">mark_scheme_id</span> এবং <span class="font-mono text-purple-400">allocated_marks</span> একসাথে স্টেট আপগ্রেড হয়।
+                    </p>
+                </div>
+
+                <!-- Solution 3: Dynamic PDF Pagination Rules -->
+                <div class="glass-panel rounded-2xl p-6 border border-slate-800 space-y-3">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-bold text-white flex items-center">
+                            <i class="fa-solid fa-page-break text-cyan-400 mr-2"></i>৩. পেজ ওভারফ্লো প্রতিরোধ ও অটোমেটিক স্পেসিং
+                        </h3>
+                        <span class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-300 text-xs font-mono">FIXED</span>
+                    </div>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        প্রতিটি প্রশ্নের নিজস্ব উচ্চতা এবং উত্তর লেখার ফাঁকা অংশের উপর ভিত্তি করে <span class="font-mono text-cyan-300">page-break-inside: avoid</span> এবং ডাইনামিক পেজিং লেআউট লজিক কার্যকর করা হয়েছে।
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECTION 5: ANTIGRAVITY COMMAND CENTER & PROMPTS -->
+        <section id="tab-antigravity" class="tab-content hidden space-y-6">
+            <div class="border-b border-slate-800 pb-4">
+                <h2 class="text-2xl font-bold text-white flex items-center">
+                    <i class="fa-solid fa-rocket text-brand-500 mr-3"></i>Antigravity Execution Command Center & MCP Configuration
+                </h2>
+                <p class="text-slate-400 text-sm mt-1">
+                    Google Antigravity-কে দিয়ে ওয়েবসাইটটি বিল্ড করার জন্য প্রয়োজনীয় সকল কনফিগারেশন ফাইল ও ৫-ধাপের কাস্টম প্রম্পট সুট।
+                </p>
+            </div>
+
+            <!-- Configuration Selector Tabs -->
+            <div class="glass-panel rounded-2xl p-6 border border-slate-800 space-y-4">
+                <div class="flex flex-wrap gap-2 text-xs font-mono">
+                    <button onclick="showConfig('mcp')" id="cfg-btn-mcp" class="cfg-btn px-3 py-2 rounded-lg bg-brand-600 text-white">.agents/mcp_config.json</button>
+                    <button onclick="showConfig('design')" id="cfg-btn-design" class="cfg-btn px-3 py-2 rounded-lg bg-slate-800 text-slate-400 hover:text-white">DESIGN.md Spec</button>
+                    <button onclick="showConfig('rules')" id="cfg-btn-rules" class="cfg-btn px-3 py-2 rounded-lg bg-slate-800 text-slate-400 hover:text-white">rules/AGENTS.md</button>
+                    <button onclick="showConfig('hooks')" id="cfg-btn-hooks" class="cfg-btn px-3 py-2 rounded-lg bg-slate-800 text-slate-400 hover:text-white">hooks.json</button>
+                </div>
+
+                <!-- Code Block Container -->
+                <div class="relative">
+                    <button onclick="copyCurrentConfig()" class="absolute right-3 top-3 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-mono flex items-center border border-slate-700">
+                        <i class="fa-regular fa-copy mr-1.5"></i>Copy Code
+                    </button>
+                    <pre id="config-code-display" class="bg-slate-900 rounded-xl p-4 border border-slate-800 font-mono text-xs text-emerald-400 overflow-x-auto max-h-96">
+                        <!-- Loaded dynamically via JS -->
+                    </pre>
+                </div>
+            </div>
+
+            <!-- 5-Phase Master Prompts for Antigravity -->
+            <div class="glass-panel rounded-2xl p-6 border border-slate-800 space-y-4">
+                <h3 class="text-xl font-bold text-white flex items-center">
+                    <i class="fa-solid fa-terminal text-emerald-400 mr-2"></i>Antigravity CLI-র জন্য ৫-ধাপের মাস্টার প্রম্পট সুট
+                </h3>
+                <p class="text-xs text-slate-400">
+                    নিচের প্রম্পটগুলো পর্যায়ক্রমে আপনার Antigravity Agent-এ প্রদান করুন। প্রতিটি ফেজ শেষ হলে `/compress` কমান্ড রান করুন।
+                </p>
+
+                <div class="space-y-4">
+                    <!-- Phase 1 Prompt -->
+                    <div class="bg-slate-900 rounded-xl p-4 border border-slate-800 space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-mono text-brand-400 font-bold">PHASE 1: Workspace Scaffolding & Design DNA</span>
+                            <button onclick="copyPrompt('p1')" class="text-xs font-mono text-slate-400 hover:text-white"><i class="fa-regular fa-copy mr-1"></i>Copy</button>
+                        </div>
+                        <p id="prompt-p1" class="text-xs font-mono text-slate-300 leading-relaxed bg-slate-950 p-3 rounded border border-slate-800">
+Read `/DESIGN.md` and `/rules/AGENTS.md`. Connect to the `stitch` MCP server, verify project screens, and scaffold a Next.js 15 (App Router, React 19, TypeScript, Tailwind CSS, Radix UI) workspace. Compile all `/DESIGN.md` tokens into `tailwind.config.ts` CSS variables.
+                        </p>
+                    </div>
+
+                    <!-- Phase 2 Prompt -->
+                    <div class="bg-slate-900 rounded-xl p-4 border border-slate-800 space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-mono text-accent-purple font-bold">PHASE 2: Database Schema & RLS Migrations</span>
+                            <button onclick="copyPrompt('p2')" class="text-xs font-mono text-slate-400 hover:text-white"><i class="fa-regular fa-copy mr-1"></i>Copy</button>
+                        </div>
+                        <p id="prompt-p2" class="text-xs font-mono text-slate-300 leading-relaxed bg-slate-950 p-3 rounded border border-slate-800">
+Using the `supabase` MCP server, execute `apply_migration` to create tables: `profiles`, `institutes`, `questions_bank`, `mock_papers`, and `generated_pdfs`. Enable strict ROW LEVEL SECURITY (RLS) policies scoped to `auth.uid()`. Generate TypeScript types into `/src/types/database.types.ts` and run `get_advisors`.
+                        </p>
+                    </div>
+
+                    <!-- Phase 3 Prompt -->
+                    <div class="bg-slate-900 rounded-xl p-4 border border-slate-800 space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-mono text-accent-cyan font-bold">PHASE 3: Auto Generator & Swap UI Engine</span>
+                            <button onclick="copyPrompt('p3')" class="text-xs font-mono text-slate-400 hover:text-white"><i class="fa-regular fa-copy mr-1"></i>Copy</button>
+                        </div>
+                        <p id="prompt-p3" class="text-xs font-mono text-slate-300 leading-relaxed bg-slate-950 p-3 rounded border border-slate-800">
+Build the Auto Mock Generator modal supporting Target Marks (25, 50, 100, Custom), Time selection, Chapter checklists, and Difficulty Curves (Standard CAIE, Foundation, A* Challenger). Build the 1-Click Question Swap engine ensuring atomic mark scheme updates.
+                        </p>
+                    </div>
+
+                    <!-- Phase 4 Prompt -->
+                    <div class="bg-slate-900 rounded-xl p-4 border border-slate-800 space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-mono text-amber-400 font-bold">PHASE 4: KaTeX Engine, Branding & Vector PDF Export</span>
+                            <button onclick="copyPrompt('p4')" class="text-xs font-mono text-slate-400 hover:text-white"><i class="fa-regular fa-copy mr-1"></i>Copy</button>
+                        </div>
+                        <p id="prompt-p4" class="text-xs font-mono text-slate-300 leading-relaxed bg-slate-950 p-3 rounded border border-slate-800">
+Integrate KaTeX math rendering engine. Build the Branding & Layout Settings modal allowing coaching name, subtitle, logo upload, student header, and official Cambridge cover page toggle. Implement vector PDF export with official mark schemes attached at the end.
+                        </p>
+                    </div>
+
+                    <!-- Phase 5 Prompt -->
+                    <div class="bg-slate-900 rounded-xl p-4 border border-slate-800 space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-mono text-emerald-400 font-bold">PHASE 5: Playwright QA, GitHub PR & Vercel Ship</span>
+                            <button onclick="copyPrompt('p5')" class="text-xs font-mono text-slate-400 hover:text-white"><i class="fa-regular fa-copy mr-1"></i>Copy</button>
+                        </div>
+                        <p id="prompt-p5" class="text-xs font-mono text-slate-300 leading-relaxed bg-slate-950 p-3 rounded border border-slate-800">
+Run `playwright` MCP server across Desktop (1440px), Tablet (768px), and Mobile (390px) viewports to verify paper layout and forms. Commit code using `github` MCP server to a feature branch, create PR to `main`, and trigger production deployment via `vercel` MCP.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 6: LIVE INTERACTIVE SIMULATOR -->
+        <section id="tab-simulator" class="tab-content hidden space-y-6">
+            <div class="border-b border-slate-800 pb-4">
+                <h2 class="text-2xl font-bold text-white flex items-center">
+                    <i class="fa-solid fa-bolt text-emerald-400 mr-3"></i>লাইভ অটো পেপার জেনারেটর সিমুলেটর (Interactive Demo)
+                </h2>
+                <p class="text-slate-400 text-sm mt-1">
+                    ভিডিওতে প্রদর্শিত পেপার জেনারেটর অ্যালগরিদম ও কোয়েশ্চেন সোয়াপ লজিকের লাইভ সিমুলেশন।
+                </p>
+            </div>
+
+            <!-- Interactive Mock Builder Box -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Controls Panel -->
+                <div class="glass-panel rounded-2xl p-5 border border-slate-800 space-y-4 lg:col-span-1">
+                    <h3 class="text-base font-bold text-white border-b border-slate-800 pb-2">
+                        <i class="fa-solid fa-sliders text-brand-400 mr-2"></i>মক পেপার কনফিগারেশন
+                    </h3>
+
+                    <!-- Target Marks -->
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-mono text-slate-300">Target Marks:</label>
+                        <div class="grid grid-cols-3 gap-2 text-xs">
+                            <button onclick="setSimMarks(25)" id="m-btn-25" class="sim-m-btn py-1.5 rounded bg-slate-800 text-slate-300">25 Marks</button>
+                            <button onclick="setSimMarks(30)" id="m-btn-30" class="sim-m-btn py-1.5 rounded bg-brand-600 text-white font-bold">30 Marks</button>
+                            <button onclick="setSimMarks(50)" id="m-btn-50" class="sim-m-btn py-1.5 rounded bg-slate-800 text-slate-300">50 Marks</button>
+                        </div>
+                    </div>
+
+                    <!-- Difficulty Curve Selector -->
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-mono text-slate-300">Difficulty Curve Profile:</label>
+                        <select id="sim-curve-select" onchange="runSimGeneration()" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-slate-200">
+                            <option value="caie">Standard CAIE Curve (30% E / 50% M / 20% H)</option>
+                            <option value="foundation">Foundation Drill (80% E / 20% M / 0% H)</option>
+                            <option value="challenger">A* Challenger (15% E / 45% M / 40% H)</option>
+                        </select>
+                    </div>
+
+                    <!-- Chapter Checklist -->
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-mono text-slate-300">Include Chapters:</label>
+                        <div class="space-y-1 text-xs text-slate-300">
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" checked onchange="runSimGeneration()" class="rounded bg-slate-900 border-slate-700 text-brand-600">
+                                <span>1. Number & Arithmetic</span>
+                            </label>
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" checked onchange="runSimGeneration()" class="rounded bg-slate-900 border-slate-700 text-brand-600">
+                                <span>2. Algebra & Graphs</span>
+                            </label>
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" checked onchange="runSimGeneration()" class="rounded bg-slate-900 border-slate-700 text-brand-600">
+                                <span>4. Geometry & Mensuration</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Generate Action Button -->
+                    <button onclick="runSimGeneration()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-brand-600 to-accent-purple text-white font-bold text-xs shadow-lg shadow-brand-500/20 hover:opacity-90 transition-all flex items-center justify-center">
+                        <i class="fa-solid fa-wand-magic-sparkles mr-2"></i>Generate Mock Paper
+                    </button>
+                </div>
+
+                <!-- Live Generated Paper Viewport -->
+                <div class="glass-panel rounded-2xl p-5 border border-slate-800 lg:col-span-2 space-y-4 bg-slate-900/90">
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                        <div>
+                            <span class="text-xs font-mono text-brand-400 block font-bold">GENERATED MOCK PAPER PREVIEW</span>
+                            <h4 id="sim-paper-title" class="text-base font-bold text-white">Mathematics D (4024) Mock Examination</h4>
+                        </div>
+                        <div class="text-right">
+                            <span id="sim-paper-badge" class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-300 text-xs font-mono font-bold">30 / 30 Marks</span>
+                        </div>
+                    </div>
+
+                    <!-- Questions Container -->
+                    <div id="sim-questions-list" class="space-y-3 font-mono text-xs">
+                        <!-- Rendered dynamically via JS -->
+                    </div>
+
+                    <div class="pt-2 flex justify-between items-center text-xs text-slate-400 font-mono border-t border-slate-800">
+                        <span><i class="fa-solid fa-check text-emerald-400 mr-1"></i>Official Mark Scheme Included</span>
+                        <button onclick="alert('PDF Export Engine simulation ready!')" class="px-3 py-1.5 rounded bg-emerald-600 text-white font-sans font-semibold hover:bg-emerald-500">
+                            <i class="fa-solid fa-file-pdf mr-1"></i>Download PDF
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="glass-panel border-t border-slate-800 py-6 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500 space-y-2">
+            <p>PaperCraft AI Studio — Single Page Application Blueprint & Video Analysis Hub</p>
+            <p class="font-mono text-[10px]">Configured for Google Antigravity IDE, Stitch MCP, Supabase, Vercel & GitHub MCP Servers</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic & Chart.js Initialization -->
+    <script>
+        // Chart.js Difficulty Curve Initialization
+        let difficultyChartInstance = null;
+
+        function initDifficultyChart() {
+            const ctx = document.getElementById('difficultyChart').getContext('2d');
+            difficultyChartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Easy Questions', 'Medium Questions', 'Hard Questions'],
+                    datasets: [{
+                        data: [30, 50, 20],
+                        backgroundColor: ['#10b981', '#6366f1', '#8b5cf6'],
+                        borderColor: '#0f172a',
+                        borderWidth: 3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#94a3b8',
+                                font: { family: 'Hind Siliguri', size: 12 }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return ' ' + context.label + ': ' + context.raw + '% Marks';
+                                }
+                            }
+                        }
+                    },
+                    cutout: '65%'
+                }
+            });
+        }
+
+        // Tab Switching Logic
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById('tab-' + tabId).classList.remove('hidden');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-brand-500', 'bg-brand-500/10', 'border', 'border-brand-500/30');
+                btn.classList.add('text-slate-400');
+            });
+
+            const activeBtn = document.getElementById('nav-' + tabId);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-slate-400');
+                activeBtn.classList.add('text-brand-500', 'bg-brand-500/10', 'border', 'border-brand-500/30');
+            }
+        }
+
+        // Database Inspector Data State
+        const tableSchemas = {
+            questions: {
+                name: "public.questions_bank",
+                rls: "ENABLE ROW LEVEL SECURITY (Policy: authenticated users READ; admin INSERT/UPDATE)",
+                columns: [
+                    { name: "id", type: "uuid (PK)", desc: "Unique question identifier" },
+                    { name: "code", type: "varchar", desc: "e.g. 4024/11_Winter_2024_Q1" },
+                    { name: "curriculum", type: "enum", desc: "CIE_O_LEVEL, CIE_A_LEVEL, EDEXCEL" },
+                    { name: "subject_code", type: "varchar", desc: "e.g. 4024 (Mathematics D)" },
+                    { name: "topic_category", type: "varchar", desc: "Number, Algebra, Geometry, etc." },
+                    { name: "difficulty_level", type: "enum", desc: "EASY, MEDIUM, HARD" },
+                    { name: "marks", type: "integer", desc: "Mark allocation (e.g. 2, 4, 5, 12)" },
+                    { name: "latex_prompt", type: "text", desc: "KaTeX math prompt string" },
+                    { name: "mark_scheme_latex", type: "text", desc: "Official marking guideline LaTeX" }
+                ]
+            },
+            mock_papers: {
+                name: "public.mock_papers",
+                rls: "ENABLE ROW LEVEL SECURITY (Policy: auth.uid() = user_id)",
+                columns: [
+                    { name: "id", type: "uuid (PK)", desc: "Mock paper ID" },
+                    { name: "user_id", type: "uuid (FK -> profiles.id)", desc: "Teacher / Owner user ID" },
+                    { name: "title", type: "text", desc: "Mathematics D Mock Examination" },
+                    { name: "target_marks", type: "integer", desc: "Total target marks (e.g. 30, 50, 100)" },
+                    { name: "difficulty_profile", type: "varchar", desc: "CAIE_STANDARD, FOUNDATION, CHALLENGER" },
+                    { name: "question_ids", type: "jsonb array", desc: "Ordered array of question UUIDs" },
+                    { name: "branding_config", type: "jsonb", desc: "Institute name, logo URL, options" }
+                ]
+            },
+            institutes: {
+                name: "public.institutes",
+                rls: "ENABLE ROW LEVEL SECURITY (Policy: auth.uid() = owner_id)",
+                columns: [
+                    { name: "id", type: "uuid (PK)", desc: "Institute ID" },
+                    { name: "owner_id", type: "uuid (FK -> profiles.id)", desc: "Owner user ID" },
+                    { name: "name", type: "varchar", desc: "e.g. THE COACH" },
+                    { name: "subtitle", type: "varchar", desc: "e.g. Tanas Sir" },
+                    { name: "logo_storage_path", type: "text", desc: "Supabase storage path for logo PNG/JPG" }
+                ]
+            },
+            users: {
+                name: "public.profiles",
+                rls: "ENABLE ROW LEVEL SECURITY (Policy: auth.uid() = id)",
+                columns: [
+                    { name: "id", type: "uuid (PK -> auth.users)", desc: "User profile ID" },
+                    { name: "email", type: "varchar", desc: "Teacher email address" },
+                    { name: "full_name", type: "varchar", desc: "Teacher full name" },
+                    { name: "subscription_tier", type: "enum", desc: "FREE_TRIAL, PRO_MONTHLY, INSTITUTION" }
+                ]
+            }
+        };
+
+        function inspectTable(tableName) {
+            document.querySelectorAll('.tbl-btn').forEach(btn => {
+                btn.classList.remove('bg-brand-600', 'text-white');
+                btn.classList.add('bg-slate-800', 'text-slate-400');
+            });
+            document.getElementById('tbl-btn-' + tableName).classList.add('bg-brand-600', 'text-white');
+
+            const data = tableSchemas[tableName];
+            let html = `<div class="text-brand-400 font-bold mb-1">Table: ${data.name}</div>`;
+            html += `<div class="text-emerald-400 text-[11px] mb-3">${data.rls}</div>`;
+            html += `<div class="grid grid-cols-1 sm:grid-cols-3 gap-2 border-t border-slate-800 pt-2 font-bold text-slate-300"><div>Column Name</div><div>Type</div><div>Description</div></div>`;
+            
+            data.columns.forEach(col => {
+                html += `<div class="grid grid-cols-1 sm:grid-cols-3 gap-2 border-b border-slate-800/50 py-1 text-slate-400">
+                    <div class="text-slate-200">${col.name}</div>
+                    <div class="text-purple-300">${col.type}</div>
+                    <div class="text-slate-400">${col.desc}</div>
+                </div>`;
+            });
+
+            document.getElementById('table-details-box').innerHTML = html;
+        }
+
+        // Configuration Files Store
+        const configs = {
+            mcp: `{
+  "mcpServers": {
+    "stitch": {
+      "type": "http",
+      "url": "https://stitch.googleapis.com/mcp",
+      "headers": { "X-Goog-Api-Key": "\${STITCH_API_KEY}" }
+    },
+    "supabase": {
+      "type": "http",
+      "url": "https://mcp.supabase.com/mcp?project_ref=\${SUPABASE_PROJECT_REF}",
+      "headers": { "Authorization": "Bearer \${SUPABASE_ACCESS_TOKEN}" }
+    },
+    "vercel": { "type": "http", "url": "https://mcp.vercel.com" },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": { "GITHUB_PERSONAL_ACCESS_TOKEN": "\${GITHUB_PAT}" }
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@executeautomation/playwright-mcp-server"]
+    }
+  }
+}`,
+            design: `# DESIGN.md — PaperCraft Worksheet Studio Design Tokens
+1. Brand: Deep Midnight Glassmorphism (#0F172A base, #6366F1 primary, #8B5CF6 accent).
+2. Fonts: Inter (Body), Space Grotesk (Headings), JetBrains Mono (Code & Math).
+3. Viewports: Desktop 1440px, Tablet 768px, Mobile 390px.
+4. Glass Panels: rgba(30, 41, 59, 0.7) blur(12px) border 1px solid rgba(255,255,255,0.08).`,
+            rules: `# AGENTS.md — Antigravity Rules
+1. Never scaffold in one monolithic turn. Work in 5 distinct phases.
+2. Require ENABLE ROW LEVEL SECURITY on every public PostgreSQL table created.
+3. Conserve Stitch API quotas by reserving generation calls for new full-screen layouts only.`,
+            hooks: `{
+  "hooks": {
+    "PreToolUse": [{
+      "matcher": "mcp(supabase/apply_migration)",
+      "command": "node ./scripts/verify-rls.mjs"
+    }],
+    "Stop": [{
+      "command": "npm run lint && npm run typecheck"
+    }]
+  }
+}`
+        };
+
+        let currentConfigKey = 'mcp';
+
+        function showConfig(cfgKey) {
+            currentConfigKey = cfgKey;
+            document.querySelectorAll('.cfg-btn').forEach(btn => {
+                btn.classList.remove('bg-brand-600', 'text-white');
+                btn.classList.add('bg-slate-800', 'text-slate-400');
+            });
+            document.getElementById('cfg-btn-' + cfgKey).classList.add('bg-brand-600', 'text-white');
+            document.getElementById('config-code-display').innerText = configs[cfgKey];
+        }
+
+        function copyCurrentConfig() {
+            navigator.clipboard.writeText(configs[currentConfigKey]);
+            alert('Config code copied to clipboard!');
+        }
+
+        function copyPrompt(phaseId) {
+            const text = document.getElementById('prompt-' + phaseId).innerText;
+            navigator.clipboard.writeText(text);
+            alert('Antigravity Phase Prompt copied to clipboard!');
+        }
+
+        // Live Mock Simulator State & Logic
+        let simMockState = [
+            { id: 1, code: "4024/11_Winter_2024_Q1", topic: "Number", marks: 2, difficulty: "EASY", text: "Evaluate: 2 + 3 × (7 - 4)" },
+            { id: 2, code: "4024/12_Summer_2025_Q1", topic: "Algebra", marks: 4, difficulty: "MEDIUM", text: "Solve the simultaneous equations: 3x + 2y = 12, x - y = 1" },
+            { id: 3, code: "4024/11_Winter_2021_Q14", topic: "Number", marks: 6, difficulty: "MEDIUM", text: "Express 420 as a product of its prime factors in index form." },
+            { id: 4, code: "4024/22_Winter_2018_Q2", topic: "Statistics", marks: 10, difficulty: "HARD", text: "Calculate the estimated mean and draw the cumulative frequency curve." },
+            { id: 5, code: "4024/21_Winter_2024_Q6", topic: "Geometry", marks: 8, difficulty: "MEDIUM", text: "Calculate angle ABC giving reason for each step of your working." }
+        ];
+
+        function renderSimQuestions() {
+            let html = "";
+            let total = 0;
+            simMockState.forEach((q, index) => {
+                total += q.marks;
+                html += `
+                <div class="p-3 rounded-lg bg-slate-950 border border-slate-800 flex justify-between items-center">
+                    <div class="space-y-1">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-slate-200 font-bold">Q${index + 1}.</span>
+                            <span class="text-brand-400 text-[11px]">${q.code}</span>
+                            <span class="px-1.5 py-0.5 rounded text-[9px] bg-slate-800 text-slate-300">${q.topic}</span>
+                            <span class="px-1.5 py-0.5 rounded text-[9px] ${q.difficulty === 'EASY' ? 'bg-emerald-500/20 text-emerald-300' : q.difficulty === 'MEDIUM' ? 'bg-brand-500/20 text-brand-300' : 'bg-purple-500/20 text-purple-300'}">${q.difficulty}</span>
+                        </div>
+                        <p class="text-slate-300 text-xs font-sans">${q.text}</p>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <span class="text-emerald-400 font-bold">${q.marks}m</span>
+                        <button onclick="swapSimQuestion(${index})" class="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-[10px] border border-slate-700">
+                            <i class="fa-solid fa-arrows-rotate mr-1 text-emerald-400"></i>Swap
+                        </button>
+                    </div>
+                </div>`;
+            });
+            document.getElementById('sim-questions-list').innerHTML = html;
+            document.getElementById('sim-paper-badge').innerText = total + " / " + total + " Marks";
+        }
+
+        function swapSimQuestion(index) {
+            const replacements = [
+                { id: 101, code: "4024/11_Winter_2023_Q4", topic: "Number", marks: 2, difficulty: "EASY", text: "Swapped: Calculate 15% of $480." },
+                { id: 102, code: "4024/13_Summer_2025_Q17", topic: "Algebra", marks: 4, difficulty: "MEDIUM", text: "Swapped: Factorise completely: 8x² - 18y²." },
+                { id: 103, code: "4024/12_Summer_2020_Q1", topic: "Number", marks: 6, difficulty: "MEDIUM", text: "Swapped: Write down the LCM of 36 and 90." },
+                { id: 104, code: "4024/23_Winter_2022_Q5", topic: "Statistics", marks: 10, difficulty: "HARD", text: "Swapped: Calculate the standard deviation for the given frequency distribution." },
+                { id: 105, code: "4024/22_Summer_2023_Q22", topic: "Geometry", marks: 8, difficulty: "MEDIUM", text: "Swapped: Prove that triangle ABC is congruent to triangle DEF." }
+            ];
+            simMockState[index] = replacements[index];
+            renderSimQuestions();
+        }
+
+        function setSimMarks(marks) {
+            document.querySelectorAll('.sim-m-btn').forEach(b => {
+                b.classList.remove('bg-brand-600', 'text-white', 'font-bold');
+                b.classList.add('bg-slate-800', 'text-slate-300');
+            });
+            document.getElementById('m-btn-' + marks).classList.add('bg-brand-600', 'text-white', 'font-bold');
+            runSimGeneration();
+        }
+
+        function runSimGeneration() {
+            renderSimQuestions();
+        }
+
+        // Initialize on DOM Load
+        document.addEventListener('DOMContentLoaded', () => {
+            initDifficultyChart();
+            inspectTable('questions');
+            showConfig('mcp');
+            renderSimQuestions();
+        });
+    </script>
+</body>
+</html>

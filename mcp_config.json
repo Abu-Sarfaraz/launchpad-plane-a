@@ -1,0 +1,61 @@
+{
+  "mcpServers": {
+    "stitch": {
+      "type": "http",
+      "url": "https://stitch.googleapis.com/mcp",
+      "headers": {
+        "Accept": "application/json",
+        "X-Goog-Api-Key": "${STITCH_API_KEY}"
+      }
+    },
+    "supabase": {
+      "type": "http",
+      "url": "https://mcp.supabase.com/mcp?project_ref=${SUPABASE_PROJECT_REF}&read_only=true&features=database,docs,debugging,development",
+      "headers": {
+        "Authorization": "Bearer ${SUPABASE_ACCESS_TOKEN}"
+      }
+    },
+    "vercel": {
+      "type": "http",
+      "url": "https://mcp.vercel.com"
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github@<PIN_VERSION>"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_PAT}"
+      }
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@executeautomation/playwright-mcp-server@<PIN_VERSION>"]
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem@<PIN_VERSION>", "${workspaceFolder}"]
+    }
+  },
+  "permissions": {
+    "allow": [
+      "mcp(stitch/list_projects)",
+      "mcp(stitch/get_project)",
+      "mcp(stitch/list_screens)",
+      "mcp(stitch/get_screen)",
+      "mcp(supabase/list_tables)",
+      "mcp(supabase/list_migrations)",
+      "mcp(supabase/get_advisors)",
+      "mcp(supabase/generate_typescript_types)",
+      "mcp(supabase/get_project_url)",
+      "mcp(supabase/get_publishable_keys)",
+      "mcp(playwright/*)",
+      "mcp(filesystem/*)"
+    ],
+    "ask": [
+      "mcp(stitch/generate_screen_from_text)",
+      "mcp(supabase/apply_migration)",
+      "mcp(supabase/execute_sql)",
+      "mcp(vercel/*)",
+      "mcp(github/*)"
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "command": "node ./scripts/hooks/verify-env.mjs",
+        "description": "Check Node >= 20, DESIGN.md and AGENTS.md exist, required env var names are set. Never print values."
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "mcp(supabase/apply_migration)|mcp(supabase/execute_sql)",
+        "command": "node ./scripts/hooks/sql-rls-circuit-breaker.mjs",
+        "description": "Block DROP and TRUNCATE. Block CREATE TABLE without ENABLE ROW LEVEL SECURITY."
+      }
+    ],
+    "Stop": [
+      {
+        "command": "npm run lint && npm run typecheck && npm run test -- --run",
+        "description": "Turn cannot finish until lint, typecheck, and tests all pass."
+      }
+    ]
+  }
+}
