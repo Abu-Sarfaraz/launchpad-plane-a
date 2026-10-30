@@ -2,8 +2,10 @@
 
 import React, { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { ShieldAlert, KeyRound, ArrowRight, Lock, CheckCircle2, AlertCircle } from 'lucide-react';
+import { ShieldAlert, KeyRound, ArrowRight, Lock, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+import { FriendlyAlert } from '@/components/ui/FriendlyAlert';
+import { toFriendlyError, FriendlyError } from '@/lib/errors/friendlyErrors';
 
 function AdminLoginForm() {
   const router = useRouter();
@@ -12,18 +14,23 @@ function AdminLoginForm() {
 
   const [secretKey, setSecretKey] = useState('');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [friendlyError, setFriendlyError] = useState<FriendlyError | null>(null);
   const [success, setSuccess] = useState(false);
 
   const handleAdminAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!secretKey.trim()) {
-      setError('Please provide an admin secret key');
+      setFriendlyError({
+        title: 'Secret Key Required',
+        friendlyMessage: 'Please provide the Admin Secret Key to access platform operations.',
+        actionSuggestion: 'Check your ADMIN_SECRET_KEY in .env.local or your Vercel deployment variables.',
+        canRetry: false,
+      });
       return;
     }
 
     setLoading(true);
-    setError(null);
+    setFriendlyError(null);
 
     try {
       const res = await fetch('/api/admin/auth', {
@@ -34,7 +41,15 @@ function AdminLoginForm() {
 
       const data = await res.json();
       if (!res.ok) {
-        throw new Error(data.error || 'Authentication failed');
+        setFriendlyError({
+          title: 'Incorrect Admin Key',
+          friendlyMessage: 'The credentials supplied were not recognized by the platform security guard.',
+          actionSuggestion: 'Ensure you are passing the exact ADMIN_SECRET_KEY configured in your environment.',
+          canRetry: true,
+          technicalDetails: data.error || 'HTTP 401 Unauthorized',
+          statusCode: res.status,
+        });
+        return;
       }
 
       setSuccess(true);
@@ -42,7 +57,7 @@ function AdminLoginForm() {
         router.push(redirectPath);
       }, 600);
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Invalid admin credentials');
+      setFriendlyError(toFriendlyError(err, 'Admin Authentication'));
     } finally {
       setLoading(false);
     }
@@ -60,13 +75,12 @@ function AdminLoginForm() {
         </p>
       </div>
 
-      {error && (
-        <div
-          role="alert"
-          className="mb-6 p-4 rounded-xl bg-error/10 border border-error/20 flex items-start gap-3 text-sm text-error"
-        >
-          <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
-          <span>{error}</span>
+      {friendlyError && (
+        <div className="mb-6">
+          <FriendlyAlert
+            error={friendlyError}
+            onDismiss={() => setFriendlyError(null)}
+          />
         </div>
       )}
 

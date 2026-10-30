@@ -22,6 +22,26 @@ function AuthContent() {
 
   const supabase = createClient();
 
+  const formatAuthError = (msg: string): string => {
+    const lower = msg.toLowerCase();
+    if (lower.includes('invalid login credentials')) {
+      return 'Incorrect email or password. Please verify your credentials or create a new mission account.';
+    }
+    if (lower.includes('user already registered')) {
+      return 'An account with this email address already exists. Please switch to "Sign In" above.';
+    }
+    if (lower.includes('password') && lower.includes('least 6')) {
+      return 'Your password must be at least 6 characters long.';
+    }
+    if (lower.includes('email not confirmed')) {
+      return 'Please check your inbox and verify your email address before signing in.';
+    }
+    if (lower.includes('rate limit')) {
+      return 'Too many login attempts. Please wait a minute before trying again.';
+    }
+    return msg || 'Authentication could not be completed. Please try again.';
+  };
+
   const handleOAuthLogin = async (provider: 'google' | 'github') => {
     setLoading(true);
     setMessage(null);
@@ -35,10 +55,10 @@ function AuthContent() {
       });
 
       if (error) {
-        setMessage({ type: 'error', text: error.message });
+        setMessage({ type: 'error', text: formatAuthError(error.message) });
       }
     } catch {
-      setMessage({ type: 'error', text: `Failed to initiate ${provider} login.` });
+      setMessage({ type: 'error', text: `Failed to connect with ${provider}. Please check your connection and retry.` });
     } finally {
       setLoading(false);
     }
@@ -69,7 +89,7 @@ function AuthContent() {
         });
 
         if (error) {
-          setMessage({ type: 'error', text: error.message });
+          setMessage({ type: 'error', text: formatAuthError(error.message) });
         } else {
           setMessage({
             type: 'success',
@@ -84,14 +104,14 @@ function AuthContent() {
         });
 
         if (error) {
-          setMessage({ type: 'error', text: error.message });
+          setMessage({ type: 'error', text: formatAuthError(error.message) });
         } else {
           setMessage({ type: 'success', text: 'Authenticated! Redirecting...' });
           router.push('/dashboard');
         }
       }
     } catch {
-      setMessage({ type: 'error', text: 'An unexpected authentication error occurred.' });
+      setMessage({ type: 'error', text: 'An unexpected authentication error occurred. Please check your connection and retry.' });
     } finally {
       setLoading(false);
     }

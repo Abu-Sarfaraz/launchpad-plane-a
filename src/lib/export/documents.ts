@@ -17,22 +17,37 @@ function sanitizeFilename(name: string): string {
 }
 
 function triggerDownload(blob: Blob, filename: string): void {
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  setTimeout(() => {
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  }, 100);
+  try {
+    if (typeof window === 'undefined' || !window.URL || !window.document) {
+      throw new Error('Download trigger is only available in client browser environments.');
+    }
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => {
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }, 150);
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : String(err);
+    throw new Error(`Browser download blocked or unavailable: ${msg}. Please allow popups or copy the paper content directly.`);
+  }
 }
 
 /**
  * Multi-page A4 PDF binary generator compliant with PDF-1.4 specification
  */
 export function generatePdfBlob(title: string, content: string, metadata?: DocumentMetadata): Blob {
+  if (!title || !title.trim()) {
+    throw new Error('A document title is required to generate a PDF.');
+  }
+  if (!content || !content.trim()) {
+    throw new Error('Document content cannot be empty to generate a PDF.');
+  }
+
   const cleanTitle = title.replace(/[()]/g, '');
   const lines: string[] = [];
 
@@ -147,6 +162,13 @@ export function downloadAsPdf(title: string, content: string, metadata?: Documen
  * Formatted Microsoft Word (.doc) document generator with MSOffice XML namespaces
  */
 export function generateDocBlob(title: string, content: string, metadata?: DocumentMetadata): Blob {
+  if (!title || !title.trim()) {
+    throw new Error('A document title is required to generate a Word document.');
+  }
+  if (!content || !content.trim()) {
+    throw new Error('Document content cannot be empty to generate a Word document.');
+  }
+
   const formattedHtml = content
     .split('\n\n')
     .map((paragraph) => {

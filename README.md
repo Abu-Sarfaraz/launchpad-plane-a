@@ -7,7 +7,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-Strict_5.7.3-3178C6?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4.17-06B6D4?style=for-the-badge&logo=tailwindcss)](https://tailwindcss.com/)
 [![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL_RLS-3ECF8E?style=for-the-badge&logo=supabase)](https://supabase.com/)
-[![Vitest](https://img.shields.io/badge/Vitest-44_Passing-6E9F18?style=for-the-badge&logo=vitest)](https://vitest.dev/)
+[![Vitest](https://img.shields.io/badge/Vitest-51_Passing-6E9F18?style=for-the-badge&logo=vitest)](https://vitest.dev/)
 [![Playwright](https://img.shields.io/badge/Playwright-24_Passing_WCAG_AA-2EAD33?style=for-the-badge&logo=playwright)](https://playwright.dev/)
 
 ---
@@ -132,7 +132,7 @@ npm run lint
 # 2. TypeScript strict compilation check
 npm run typecheck
 
-# 3. Unit test suite (44 tests across scaffold, database, auth, AI fallback, admin, export)
+# 3. Unit test suite (51 tests across scaffold, database, auth, AI fallback, admin, export, friendly-errors)
 npm run test
 
 # 4. End-to-end and WCAG AA accessibility tests across 3 viewports
@@ -143,7 +143,7 @@ npm run build
 ```
 
 ### Test Coverage Highlights
-- **Unit Suite (44/44 Passing)**:
+- **Unit Suite (51/51 Passing)**:
   - Phase 1: Directory contract and specification enforcement
   - Phase 2: Supabase schema and RLS policies verification
   - Phase 3: Component rendering for landing page and dashboard (including PaperCraft Studio)
@@ -152,6 +152,7 @@ npm run build
   - AI Engine: Primary success, failover on 429/timeout, forced provider routing, and combined failure handling
   - Admin Suite: Session authentication, unauthorized rejection, and environment auditing
   - Document Export Suite: PDF-1.4 binary structure verification, multi-page pagination, and Word XML formatting
+  - Friendly Error Handling: Accurate classification and user guidance for 429 rate limits, timeouts, safety blocks, 401 auth, 502 gateway disruptions, and export failures
 - **Playwright Suite (24/24 Passing)**:
   - Tested across **Desktop (1440px)**, **Tablet (768px)**, and **Mobile (390px)**
   - Automated **Axe-core WCAG AA** audit on Landing page, Auth gateway, and Customer Dashboard with **0 violations**
@@ -185,16 +186,20 @@ launchpad-plane-a/
 │   │   │   └── webhooks/checkout/       # Payment webhook processor
 │   │   ├── auth/                        # Supabase auth gateway
 │   │   ├── dashboard/                   # Customer telemetry dashboard & PaperCraft Studio
+│   │   ├── error.tsx                    # Global Next.js error boundary
+│   │   ├── not-found.tsx                # Accessible 404 recovery page
 │   │   ├── layout.tsx                   # Root layout with globals & tokens
 │   │   └── page.tsx                     # Marketing landing page
 │   ├── components/
 │   │   ├── dashboard/                   # PaperStudio, TopStats, DataTable, OrderTracker
 │   │   ├── marketing/                   # Hero, Features, Pricing, Testimonials
-│   │   └── ui/                          # Button primitives and design tokens
+│   │   └── ui/                          # FriendlyAlert, Button primitives
 │   ├── lib/
 │   │   ├── ai/
 │   │   │   ├── client.ts                # Fallback engine (Gemini -> OpenRouter)
 │   │   │   └── types.ts                 # AI request/response types
+│   │   ├── errors/
+│   │   │   └── friendlyErrors.ts        # Error classifier & human guidance
 │   │   ├── export/
 │   │   │   └── documents.ts             # PDF-1.4 & MS Word export engine
 │   │   ├── supabase/                    # SSR client & server helpers
@@ -206,7 +211,7 @@ launchpad-plane-a/
 │   └── migrations/                      # Applied DDL migrations
 ├── tests/
 │   ├── e2e/                             # Playwright & axe-core tests
-│   └── unit/                            # Vitest unit test suite
+│   └── unit/                            # Vitest unit test suite (51 tests)
 ├── DESIGN.md                            # Design token specification
 ├── AGENTS.md                            # Engineering protocol rules
 └── package.json                         # Pinned exact dependencies

@@ -22,6 +22,8 @@ import {
   FileText,
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+import { FriendlyAlert } from '@/components/ui/FriendlyAlert';
+import { toFriendlyError, FriendlyError } from '@/lib/errors/friendlyErrors';
 import { downloadAsPdf, downloadAsDoc } from '@/lib/export/documents';
 
 interface SystemState {
@@ -76,6 +78,8 @@ export default function AdminDashboardPage() {
   const [users, setUsers] = useState<UserProfile[]>([]);
   const [orders, setOrders] = useState<OrderItem[]>([]);
   const [refreshing, setRefreshing] = useState(false);
+  const [systemError, setSystemError] = useState<FriendlyError | null>(null);
+  const [actionFeedback, setActionFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
 
   // AI Prompt Runner state
   const [promptText, setPromptText] = useState('Generate an executive summary for an academic research paper on autonomous agent architectures.');
@@ -88,10 +92,11 @@ export default function AdminDashboardPage() {
     latencyMs: number;
     fallbackUsed: boolean;
   } | null>(null);
-  const [aiError, setAiError] = useState<string | null>(null);
+  const [aiError, setAiError] = useState<FriendlyError | null>(null);
 
   const fetchSystemData = useCallback(async () => {
     setRefreshing(true);
+    setSystemError(null);
     try {
       const [sysRes, usersRes, ordersRes] = await Promise.all([
         fetch('/api/admin/system'),
@@ -107,6 +112,8 @@ export default function AdminDashboardPage() {
       if (sysRes.ok) {
         const sysData = await sysRes.json();
         setSystemState(sysData);
+      } else {
+        setSystemError(toFriendlyError('Unable to load real-time system diagnostics', 'Telemetry Diagnostics'));
       }
       if (usersRes.ok) {
         const uData = await usersRes.json();
@@ -116,8 +123,8 @@ export default function AdminDashboardPage() {
         const oData = await ordersRes.json();
         setOrders(oData.orders || []);
       }
-    } catch (err) {
-      console.error('Failed to fetch admin data:', err);
+    } catch (err: unknown) {
+      setSystemError(toFriendlyError(err, 'Platform Telemetry Diagnostics'));
     } finally {
       setRefreshing(false);
     }
@@ -143,9 +150,23 @@ export default function AdminDashboardPage() {
         setUsers((prev) =>
           prev.map((u) => (u.id === userId ? { ...u, is_super_admin: !currentStatus } : u))
         );
+        setActionFeedback({
+          type: 'success',
+          message: `User permissions updated: ${!currentStatus ? 'Promoted to Super Admin' : 'Super Admin removed'}`,
+        });
+        setTimeout(() => setActionFeedback(null), 3000);
+      } else {
+        const data = await res.json();
+        setActionFeedback({
+          type: 'error',
+          message: data.error || 'Failed to update user role permissions. Please verify database privileges.',
+        });
       }
-    } catch (err) {
-      console.error('Failed to toggle admin status:', err);
+    } catch {
+      setActionFeedback({
+        type: 'error',
+        message: 'Network error encountered while changing user role.',
+      });
     }
   };
 
@@ -160,15 +181,37 @@ export default function AdminDashboardPage() {
         setOrders((prev) =>
           prev.map((o) => (o.id === orderId ? { ...o, status: newStatus } : o))
         );
+        setActionFeedback({
+          type: 'success',
+          message: `Order status updated to "${newStatus.toUpperCase()}"`,
+        });
+        setTimeout(() => setActionFeedback(null), 3000);
+      } else {
+        const data = await res.json();
+        setActionFeedback({
+          type: 'error',
+          message: data.error || 'Failed to update order status.',
+        });
       }
-    } catch (err) {
-      console.error('Failed to update order status:', err);
+    } catch {
+      setActionFeedback({
+        type: 'error',
+        message: 'Network error encountered while updating order status.',
+      });
     }
   };
 
-  const handleRunAiPrompt = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!promptText.trim()) return;
+  const handleRunAiPrompt = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (!promptText.trim()) {
+      setAiError({
+        title: 'Prompt Required',
+        friendlyMessage: 'Please enter a prompt instruction before running the test.',
+        actionSuggestion: 'Provide a topic or request in the textarea below.',
+        canRetry: false,
+      });
+      return;
+    }
 
     setAiGenerating(true);
     setAiResult(null);
@@ -186,7 +229,11 @@ export default function AdminDashboardPage() {
 
       const data = await res.json();
       if (!res.ok) {
-        throw new Error(data.message || data.error || 'Generation failed');
+        setAiError(
+          data.friendly ||
+          toFriendlyError(data.message || data.error || 'AI generation failed', 'AI Interactive Playground')
+        );
+        return;
       }
 
       setAiResult({
@@ -197,7 +244,7 @@ export default function AdminDashboardPage() {
         fallbackUsed: data.fallbackUsed,
       });
     } catch (err: unknown) {
-      setAiError(err instanceof Error ? err.message : 'Generation failed');
+      setAiError(toFriendlyError(err, 'AI Interactive Playground'));
     } finally {
       setAiGenerating(false);
     }
@@ -251,6 +298,38 @@ export default function AdminDashboardPage() {
 
       {/* Main Content */}
       <main className="flex-1 max-w-7xl w-full mx-auto p-6 md:p-8 space-y-8">
+        {/* System Error Guidance */}
+        {systemError && (
+          <FriendlyAlert
+            error={systemError}
+            onRetry={fetchSystemData}
+            onDismiss={() => setSystemError(null)}
+            isRetrying={refreshing}
+          />
+        )}
+
+        {/* Action Feedback Banner */}
+        {actionFeedback && (
+          <div
+            role="status"
+            className={`p-4 rounded-xl border flex items-center justify-between text-xs animate-fadeIn ${
+              actionFeedback.type === 'success'
+                ? 'bg-success/15 border-success/30 text-success'
+                : 'bg-rose-950/20 border-rose-500/30 text-rose-300'
+            }`}
+          >
+            <span>{actionFeedback.message}</span>
+            <button
+              type="button"
+              onClick={() => setActionFeedback(null)}
+              className="text-text-muted hover:text-white p-1 rounded"
+              aria-label="Dismiss notification"
+            >
+              ✕
+            </button>
+          </div>
+        )}
+
         {/* KPI Summary Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {/* Card 1: Supabase DB */}
@@ -507,10 +586,12 @@ export default function AdminDashboardPage() {
               </form>
 
               {aiError && (
-                <div role="alert" className="p-4 rounded-xl bg-error/10 border border-error/20 text-xs text-error flex items-start gap-2">
-                  <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
-                  <span>{aiError}</span>
-                </div>
+                <FriendlyAlert
+                  error={aiError}
+                  onRetry={() => handleRunAiPrompt()}
+                  onDismiss={() => setAiError(null)}
+                  isRetrying={aiGenerating}
+                />
               )}
 
               {aiResult && (

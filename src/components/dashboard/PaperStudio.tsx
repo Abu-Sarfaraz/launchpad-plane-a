@@ -7,10 +7,11 @@ import {
   Sparkles,
   Check,
   Copy,
-  AlertCircle,
   GraduationCap,
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+import { FriendlyAlert } from '@/components/ui/FriendlyAlert';
+import { toFriendlyError, FriendlyError } from '@/lib/errors/friendlyErrors';
 import { downloadAsPdf, downloadAsDoc } from '@/lib/export/documents';
 
 export function PaperStudio() {
@@ -30,15 +31,25 @@ export function PaperStudio() {
     latencyMs: number;
     fallbackUsed: boolean;
   } | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [friendlyError, setFriendlyError] = useState<FriendlyError | null>(null);
   const [copied, setCopied] = useState(false);
+  const [exportStatus, setExportStatus] = useState<string | null>(null);
 
-  const handleGenerate = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!prompt.trim()) return;
+  const handleGenerate = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (!prompt.trim()) {
+      setFriendlyError({
+        title: 'Prompt Required',
+        friendlyMessage: 'Please enter instructions or topics for the exam paper before generating.',
+        actionSuggestion: 'Provide a few bullet points detailing the topics and syllabus you need covered.',
+        canRetry: false,
+      });
+      return;
+    }
 
     setGenerating(true);
-    setError(null);
+    setFriendlyError(null);
+    setExportStatus(null);
 
     const fullPrompt = `You are an expert Cambridge/Edexcel exam board author. Generate a complete, formatted exam paper based on the following:
 Paper Title: ${title}
@@ -64,7 +75,11 @@ Format the response cleanly with clear section headings:
 
       const data = await res.json();
       if (!res.ok) {
-        throw new Error(data.message || data.error || 'Paper generation failed');
+        const errorObj: FriendlyError =
+          data.friendly ||
+          toFriendlyError(data.message || data.error || 'Paper generation failed', 'Examination Paper Synthesizer');
+        setFriendlyError(errorObj);
+        return;
       }
 
       setGeneratedPaper(data.text);
@@ -75,7 +90,7 @@ Format the response cleanly with clear section headings:
         fallbackUsed: data.fallbackUsed,
       });
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Failed to generate examination paper');
+      setFriendlyError(toFriendlyError(err, 'Examination Paper Synthesizer'));
     } finally {
       setGenerating(false);
     }
@@ -83,27 +98,48 @@ Format the response cleanly with clear section headings:
 
   const handleDownloadPdf = () => {
     if (!generatedPaper) return;
-    downloadAsPdf(title, generatedPaper, {
-      subject,
-      syllabus,
-      date: new Date().toLocaleDateString(),
-    });
+    try {
+      downloadAsPdf(title, generatedPaper, {
+        subject,
+        syllabus,
+        date: new Date().toLocaleDateString(),
+      });
+      setExportStatus('PDF downloaded successfully!');
+      setTimeout(() => setExportStatus(null), 3000);
+    } catch (err: unknown) {
+      setFriendlyError(toFriendlyError(err, 'PDF Document Generator'));
+    }
   };
 
   const handleDownloadDoc = () => {
     if (!generatedPaper) return;
-    downloadAsDoc(title, generatedPaper, {
-      subject,
-      syllabus,
-      date: new Date().toLocaleDateString(),
-    });
+    try {
+      downloadAsDoc(title, generatedPaper, {
+        subject,
+        syllabus,
+        date: new Date().toLocaleDateString(),
+      });
+      setExportStatus('Microsoft Word (.doc) downloaded successfully!');
+      setTimeout(() => setExportStatus(null), 3000);
+    } catch (err: unknown) {
+      setFriendlyError(toFriendlyError(err, 'Word Document Generator'));
+    }
   };
 
   const handleCopy = () => {
     if (!generatedPaper) return;
-    navigator.clipboard.writeText(generatedPaper);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    try {
+      navigator.clipboard.writeText(generatedPaper);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      setFriendlyError({
+        title: 'Clipboard Access Notice',
+        friendlyMessage: 'Browser prevented copying directly to clipboard.',
+        actionSuggestion: 'You can highlight and copy the paper text directly from the preview card below.',
+        canRetry: false,
+      });
+    }
   };
 
   return (
@@ -251,10 +287,24 @@ Format the response cleanly with clear section headings:
         </div>
       </form>
 
-      {error && (
-        <div role="alert" className="p-4 rounded-xl bg-error/10 border border-error/20 flex items-start gap-3 text-xs text-error">
-          <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
-          <span>{error}</span>
+      {/* Friendly Error Guidance Alert */}
+      {friendlyError && (
+        <FriendlyAlert
+          error={friendlyError}
+          onRetry={() => handleGenerate()}
+          onDismiss={() => setFriendlyError(null)}
+          isRetrying={generating}
+        />
+      )}
+
+      {/* Export Feedback Toast */}
+      {exportStatus && (
+        <div
+          role="status"
+          className="p-3.5 rounded-xl bg-success/15 border border-success/30 flex items-center gap-2.5 text-xs text-success animate-fadeIn"
+        >
+          <Check className="w-4 h-4 flex-shrink-0" />
+          <span>{exportStatus}</span>
         </div>
       )}
 
